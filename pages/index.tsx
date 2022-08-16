@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { AmplifySignOut } from "@aws-amplify/ui-react-v1";
 
 const Home: NextPage = () => {
   return (
@@ -6,6 +7,7 @@ const Home: NextPage = () => {
       <header className="App-header">
         <h1>Hello from V2</h1>
       </header>
+      <AmplifySignOut />
     </div>
   )
 }
