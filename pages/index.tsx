@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { AmplifySignOut } from "@aws-amplify/ui-react-v1";
+import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react-v1";
 
 const Home: NextPage = () => {
   return (
@@ -12,4 +12,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default withAuthenticator(Home);
