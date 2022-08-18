@@ -7,7 +7,10 @@ import config from '../src/aws-exports';
 Amplify.configure(config);
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  
+  return (
+      <Component {...pageProps} />
+  )
 }
 
-export default MyApp
+export default (MyApp);
