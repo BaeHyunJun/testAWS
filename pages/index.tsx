@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import Image from "next/image";
-
-import { Auth } from 'aws-amplify'
+import { useRouter } from "next/router";
 
 import {
   Box,
   Container,
   CssBaseline,
   CircularProgress,
-  Divider,
-  Grid,
-  Paper, Typography,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-// import { SnackbarProvider, useSnackbar } from "notistack";
 
+import { authCurrentUser, authSignOut } from "@config/auth";
 import { YDR_THEME } from "@config/const";
-// import { SignUp, Login } from "@config/api";
 
-import ConfirmSignup from "@components/Form/confirmsignup";
-import FormLogin from "@components/Form/login";
-import FormSignup from "@components/Form/signup";
+import Footer from "@components/Menu/footer";
 import Header from "@components/Menu/header";
-import Side from "@components/Menu/side";
-// import AlertBox from "@components/etc/alert";
+import Sample1 from "@components/etc/sample1";
+import Sample2 from "@components/etc/sample2";
+import Sample3 from "@components/etc/sample3";
+import Loading from "@components/etc/Loading";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const [isLoginState, setIsLoginState] = useState(false);
   const [uiState, setUiState] = useState<string>('');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [formState, setFormState] = useState({
@@ -39,134 +35,49 @@ const Home: NextPage = () => {
   }, []);
 
   const checkUser = async () => {
-    try {
-      setUiState('loading');
-      await Auth.currentAuthenticatedUser();
-      setUiState('dashboard');
-    } catch (e) {
-      setUiState('signIn');
+    setUiState('loading');
+    
+    if (await authCurrentUser()) {
+      setIsLoginState(true);
+    } else {
+      setIsLoginState(false);
     }
-  }
-  
-  const onChange = (e?: any) => {
-    setFormState({ ...formState, [e.target.name]: e.target.value});
-  }
-  
-  const handleListItemClick = ( e: any, idx: number ) => {
-    setSelectedIndex(idx);
-  };
-  
-  const onLogin = async () => {
-    console.log(email, password)
-    try {
-      await Auth.signIn(email, password);
-      setUiState('dashboard');
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  
-  const onSignUp = async () => {
-    try {
-      await Auth.signUp({ username: email, password, attributes: { email }})
-      setUiState('confirmSignUp')
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  
-  const onConfirm = async () => {
-    try {
-      await Auth.confirmSignUp(email, authCode);
-      await Auth.signIn(email, password);
-      setUiState('dashboard');
-    } catch (e) {
-      console.log(e);
-    }
+    
+    setUiState('index');
   }
   
   const onSignOut = async () => {
-    try {
-      await Auth.signOut();
-      setUiState('signIn');
-    } catch (e) {
-      console.log(e);
+    if (await authSignOut()) {
+      setIsLoginState(false);
+      router.push("/");
     }
   }
   
-  return uiState == "loading" ?
-    <Box sx={{ textAlign: "center", height: "100vh" }}>
-      <CircularProgress />
-    </Box>
-    : uiState ? (
-    <ThemeProvider theme={YDR_THEME}>
-      <CssBaseline />
-      { uiState == "dashboard" ?
-        <Container maxWidth={ false } sx={ { mr: 0, width: "calc(100% - 250px)" } }>
-          <Header onSignOut={onSignOut} />
-          <Side
-            selectedIndex={ selectedIndex }
-            handleListItemClick={ handleListItemClick }
-          />
-        </Container>
-        :
-        <Container fixed>
-          <Box sx={ {
-            flexGrow: 1,
-            "& .MuiPaper-root": {
-              p: 1,
-              margin: "auto",
-              maxWidth: 650,
-              flexGrow: 1,
-              height: "100vh",
-              backgroundColor: "inherit",
-            },
-            "& .MuiGrid-container": { height: "100vh" },
-            "& .MuiDivider-root": { m: 1, width: "100%" },
-          } }>
-            <Paper elevation={ 0 }>
-              <Grid
-                container
-                spacing={ 2 }
-                alignItems="center"
-              >
-                <Grid item xs={ 6 }>
-                  <Image
-                    src="/main.png"
-                    alt=""
-                    layout="fixed"
-                    width="300"
-                    height="550"
-                  />
-                </Grid>
-                <Grid item xs={ 6 }>
-                  <FormLogin onChange={ onChange } onLogin={ onLogin }/>
-  
-                  <Divider />
-  
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    component="span"
-                    role={"button"}
-                    onClick={() => console.log("비밀번호찾기로")}>
-                    비밀번호를 잊어버렸나요?
-                  </Typography>
-              
-                  {/*<Divider>OR</Divider>*/}
-                  {/*<Divider />*/}
-              
-                  { uiState == "confirmSignUp" ?
-                    <ConfirmSignup onChange={ onChange } onSignUp={ onConfirm }/> :
-                    <FormSignup onChange={ onChange } onSignUp={ onSignUp }/> }
-                </Grid>
-              </Grid>
-            </Paper>
-          </Box>
-        </Container>
-      }
+  if (!uiState) {
+    return <></>
+  } else if (uiState == "loading") {
+    return <Loading />
+  } else {
+    return <ThemeProvider theme={ YDR_THEME }>
+      <CssBaseline/>
+    
+      <Container maxWidth={ false } sx={ { mr: 0, width: "100%" } }>
+        <Header isLogin={ isLoginState } onSignOut={ onSignOut }/>
+      </Container>
+    
+      <Box sx={ { pt: "72px", height: "800px", backgroundColor: "white" } }>
+        <Sample1/>
+      </Box>
+      <Box>
+        <Sample2/>
+      </Box>
+      <Box sx={ { backgroundColor: "white" } }>
+        <Sample3/>
+      </Box>
+    
+      <Footer/>
     </ThemeProvider>
-  ) : <></>;
+  }
 };
 
 export default Home;

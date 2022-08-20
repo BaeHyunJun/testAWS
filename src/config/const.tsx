@@ -1,5 +1,16 @@
 import { createTheme } from "@mui/material/styles";
 
+interface defaultObject {
+	[index: string]: any,
+}
+
+interface defaultString {
+	[index: string]: string,
+	label: string,
+	link: string,
+}
+
+
 export const YDR_THEME = createTheme({
 	palette: {
 		// maxWidth: {
@@ -20,7 +31,7 @@ export const YDR_THEME = createTheme({
 	// },
 });
 
-export const SITE_NAME = "여대리";
+export const SITE_NAME = "모아큐브";
 export const SITE_DESCIPTION = "";
 
 export const SITE_URL = {
@@ -35,19 +46,23 @@ export const SITE_URL = {
 
 export const SITE_MESSAGE = {};
 
-export const SITE_MENU = {
-	dashboard: {
-		label: "대시보드",
-		link: "/admin/",
+export const SITE_MENU:defaultObject = {
+	register : {
+		label: "등록하기",
+		link: "/"
 	},
-	products: {
-		label: "상품 관리",
-		link: "/admin/products",
+	case : {
+		label: "이용사례",
+		link: "/"
 	},
-	reserve: {
-		label: "예약 관리",
-		link: "/admin/reserve",
+	partner : {
+		label: "파트너사",
+		link: "/partners"
 	},
+	store : {
+		label: "스토어",
+		link: "/"
+	}
 };
 
 export const SITE_TYPO = {
