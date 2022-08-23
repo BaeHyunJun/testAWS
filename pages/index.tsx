@@ -7,8 +7,10 @@ import {
   Container,
   CssBaseline,
   CircularProgress,
+  Divider, Chip,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { authCurrentUser, authSignOut } from "@config/auth";
 import { YDR_THEME } from "@config/const";
@@ -53,6 +55,11 @@ const Home: NextPage = () => {
     }
   }
   
+  const onChangeScroll = () => {
+    console.log("스크롤 이동")
+  }
+  
+  
   if (!uiState) {
     return <></>
   } else if (uiState == "loading") {
@@ -65,16 +72,34 @@ const Home: NextPage = () => {
         <Header isLogin={ isLoginState } onSignOut={ onSignOut }/>
       </Container>
     
-      <Box sx={ { pt: "72px", height: "800px", backgroundColor: "white" } }>
+      <Box sx={ { pt: "72px" } }>
         <Sample1/>
       </Box>
-      <Box>
+      
+      <Divider>
+        <ExpandMoreIcon
+          sx={{
+            backgroundColor: "white",
+            borderRadius: "15px",
+            boxShadow: "0px 1px 10px 0px gray",
+            color: "#5371f4",
+            cursor: "pointer",
+            fontSize: "30px",
+            mt: "-13px",
+            ml: "-15px",
+            position: "absolute",
+          }}
+          onClick={onChangeScroll}
+        />
+      </Divider>
+      
+      <Box sx={{ backgroundColor: "#5371f4" }}>
         <Sample2/>
       </Box>
-      <Box sx={ { backgroundColor: "white" } }>
-        <Sample3/>
-      </Box>
-    
+      {/*<Box sx={ { backgroundColor: "white" } }>*/}
+      {/*  <Sample3/>*/}
+      {/*</Box>*/}
+      
       <Footer/>
     </ThemeProvider>
   }

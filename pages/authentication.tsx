@@ -20,7 +20,7 @@ import { YDR_THEME } from "@config/const";
 // import { SignUp, Authentication } from "@config/api";
 
 import ConfirmSignup from "@components/Form/confirmsignup";
-import FormLogin from "@components/Form/login";
+import FormLogin from "@components/Form/signin";
 import FormSignup from "@components/Form/signup";
 import Footer from "@components/Menu/footer";
 import Header from "@components/Menu/header";
@@ -35,6 +35,7 @@ import { goHome } from "@config/util";
 
 const Authentication: NextPage = () => {
 	const router = useRouter();
+	const [bannerState, setBannerState] = useState<string>("");
 	const [uiState, setUiState] = useState<string>('SignIn');
 	const [formState, setFormState] = useState({
 		email: '', password: '', check_password: '', authCode: ''
@@ -46,8 +47,10 @@ const Authentication: NextPage = () => {
 		
 		if (currentPageType == "SignIn") {
 			setUiState('SignIn');
+			setBannerState("/banner_signin.png");
 		} else if (currentPageType == "SignUp") {
 			setUiState ("SignUp");
+			setBannerState("/banner_signup.png");
 		}
 	}, [router]);
 	
@@ -108,33 +111,68 @@ const Authentication: NextPage = () => {
 		</Box>
 		: uiState ? (
 			<ThemeProvider theme={YDR_THEME}>
-				<CssBaseline />
-				<Container fixed>
-					<Header />
-					<Box sx={ {
-						flexGrow: 1,
-						"& .MuiPaper-root": {
-							p: 1,
-							margin: "auto",
-							maxWidth: 350,
-							flexGrow: 1,
-							height: "100vh",
-							backgroundColor: "inherit"
-						},
-						"& .MuiGrid-container": { height: "100vh" },
-					} }>
-						<Paper elevation={ 0 }>
-							<Grid
-								container
-								spacing={ 2 }
-								alignItems="center"
-							>
-								{ uiState == "SignIn" && <FormLogin onChange={ onChange } onSignin={ onSignIn } linkSignUp={linkSignUp} /> }
-								{ uiState == "SignUp" && <FormSignup onChange={ onChange } onSignUp={ onSignUp }></FormSignup> }
-							</Grid>
-						</Paper>
-					</Box>
+				<CssBaseline/>
+				
+				<Container maxWidth={ false } sx={ { mr: 0, width: "100%" } }>
+					<Header/>
 				</Container>
+				
+				<Box
+					sx={ {
+						pt: "72px",
+						backgroundColor: "#f4f7ff",
+						"& .leftBanner": {
+							position: "relative",
+							height: "calc(100vh - 72px)",
+							backgroundColor: "white",
+							textAlign: "center",
+							backgroundImage: `url('${bannerState}')`,
+							backgroundRepeat: "no-repeat",
+							backgroundPosition: "50% 50%",
+							backgroundSize: "80%",
+						},
+						"& .leftBanner .areaText": {
+							position: "absolute",
+							top: "33%",
+							left: 0,
+							right: 0,
+						},
+						"& .leftBanner h3": {
+							fontSize: "2.2rem",
+							display: "inline",
+							letterSpacing: "-0.09em",
+						},
+						"& .leftBanner .logoText": {
+							display: "inline",
+							verticalAlign: "top",
+						},
+						"& .leftBanner h4": {
+							fontSize: "1.3rem",
+							mt: "10px",
+						},
+						"& .authForm": {
+							p: "100px",
+						}
+					} }
+				>
+					<Grid container spacing={-2} >
+						<Grid item xs={4} className={"leftBanner"}>
+							{/*<Box className={"areaText"}>*/}
+							{/*	<Typography variant="h3">모집이 필요할 때,</Typography>*/}
+							{/*	<Box className={"logoText"}>*/}
+							{/*		<Image src={"/logo.png"} alt={"로고"} width={150} height={40} />*/}
+							{/*	</Box>*/}
+							{/*	<Typography variant="h4">쉽고 빠르게 만들고 검색할 수 있습니다.</Typography>*/}
+							{/*</Box>*/}
+						</Grid>
+						<Grid item xs={8} className={"authForm"}>
+						{ uiState == "SignIn" && <FormLogin onChange={ onChange } onSignin={ onSignIn } linkSignUp={linkSignUp} /> }
+						{ uiState == "SignUp" && <FormSignup onChange={ onChange } onSignUp={ onSignUp }></FormSignup> }
+						</Grid>
+					</Grid>
+				</Box>
+				
+				{/*<Footer/>*/}
 			</ThemeProvider>
 		) : <></>;
 };

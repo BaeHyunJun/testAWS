@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { SITE_MENU } from "@config/const";
 import Link from "next/link";
 import { goHome } from "@config/util";
+import Image from "next/image";
 
 type ItemProps = {
   isLogin?: boolean
@@ -41,16 +42,8 @@ const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
         backgroundColor: "white",
         color: "#333",
         zIndex: (theme) => theme.zIndex.drawer + 1,
-        '& .logoBox': { width: 250 },
-        '& .logo': {
-          width: 200,
-          height: 60,
-          backgroundColor: 'primary.dark',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-            opacity: [0.9, 0.8, 0.7],
-          }
-        },
+        '& .logoBox': { width: 150 },
+        '& .MuiToolbar-root': { width: "1200px", margin:"0 auto" },
         '& .gnb': { flexGrow: 1, display: "flex" },
         '& .MuiButton-root': { m: 2, color: 'black', display: 'block', fontSize: "16px" },
         '& .MuiButton-root:hover': { backgroundColor: "transparent" },
@@ -58,14 +51,20 @@ const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
     >
       <Toolbar disableGutters>
         <Box className={"logoBox"}>
-          <Box className={"logo"}/>
+          {/*<Box className={"logo"}/>*/}
+          <Link href={"/"}>
+            <a>
+              <Image src={"/logo.png"} alt={"로고"} width={100} height={30} />
+            </a>
+          </Link>
         </Box>
         <Box className={"gnb"}>
-          { menuState === "default" &&
+          {
+            // menuState === "default" &&
             Object.keys(SITE_MENU).map((dat:any) => {
               return (
-                <Button>
-                  <Link key={dat} href={ SITE_MENU[dat].link }>
+                <Button key={dat}>
+                  <Link href={ SITE_MENU[dat].link }>
                     <a>
                       { SITE_MENU[dat].label }
                     </a>
@@ -77,29 +76,39 @@ const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
         </Box>
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: "flex" } }}>
-          { menuState === "default" && (
-            isLogin ?
-              <Button onClick={onSignOut}>
-                로그아웃
-              </Button>
-            :
-              <Link href="/authentication?type=SignIn">
-                <a>
-                  로그인 / 회원가입
-                </a>
-              </Link>)
+          {
+            // menuState === "default" &&
+            (
+              isLogin ?
+                <Button onClick={onSignOut}>
+                  로그아웃
+                </Button>
+              :
+              <>
+                <Button>
+                  <Link href="/authentication?type=SignIn">
+                    <a>
+                      로그인
+                    </a>
+                  </Link>
+                </Button>
+                <Button>
+                  <Link href="/authentication?type=SignUp">
+                    <a>
+                      회원가입
+                    </a>
+                  </Link>
+                </Button>
+              </>
+            )
           }
-          { menuState === "SignIn" &&
-            <Link href="/">
-              <a>
-                돌아가기
-              </a>
-            </Link>
-            
-            // <Button onClick={goHome}>
-            //   돌아가기
-            // </Button>
-          }
+          {/*{ menuState === "SignIn" &&*/}
+          {/*  <Link href="/">*/}
+          {/*    <a>*/}
+          {/*      돌아가기*/}
+          {/*    </a>*/}
+          {/*  </Link>*/}
+          {/*}*/}
         </Box>
       </Toolbar>
     </AppBar>

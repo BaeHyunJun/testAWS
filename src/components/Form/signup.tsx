@@ -1,68 +1,71 @@
 import React, { useState } from "react";
 import { NextPage } from "next";
 import { Box, Button, Checkbox, FormControlLabel, FormGroup, TextField, Typography } from "@mui/material";
+import { SITE_TYPO } from "@config/const";
 
 type ItemProps = {
 	onChange: (e?: any) => void;
 	onSignUp: () => void;
 };
 
+const { label, placeholder } = SITE_TYPO.FORM_AUTH;
+
 const SignUp: NextPage<ItemProps> = ({ onChange, onSignUp }) => {
 	return (
 		<Box
 			component="form"
 			sx={{
-				"& .MuiTextField-root": { m: 1, width: "100%", bgcolor: "white" },
-				"& .MuiButton-root": { m: 1, width: "100%" },
+				m: "0 auto",
+				width: "500px",
+				textAlign: "center",
+				"& h4": { p: 4 },
+				"& .MuiTextField-root": { m: 1, width: "100%", backgroundColor: "white" },
+				"& .MuiCheckbox-root.Mui-checked": { color: "#5570f2" },
+				"& .MuiButton-root": { m: 1, mt: 4, p: 1, fontSize: "1.3rem", width: "100%", backgroundColor: "#5570f2" },
 				"& .MuiFormGroup-root": { m: 2 }
+				
 			}}
 			noValidate
 			autoComplete="off"
 		>
 			
 			<Typography variant="h4" gutterBottom>
-				회원가입
+				{ label.signup }
 			</Typography>
 			
 			<TextField
 				required
-				size="small"
 				id="email"
-				label="E-mail"
 				name="email"
-				placeholder="이메일을 입력해주세요."
+				placeholder={ placeholder.email }
 				onChange={onChange}
 			/>
 			<TextField
 				required
-				size="small"
 				id="password"
-				label="Password"
 				type="password"
 				autoComplete="current-password"
 				name="password"
-				placeholder="비밀번호를 입력해주세요."
+				placeholder={ placeholder.password + label.checkCountPassword }
 				onChange={onChange}
 			/>
 			<TextField
 				required
-				size="small"
 				id="check_password"
-				label="Check Password"
 				type="password"
 				autoComplete="current-password"
 				name="check_password"
-				placeholder="비밀번호를 한번 더 입력해주세요."
+				placeholder={ placeholder.chk_password }
 				onChange={onChange}
 			/>
 			
-			<FormGroup>
-				<FormControlLabel control={<Checkbox />} label="이용약관 동의" />
-				<FormControlLabel control={<Checkbox />} label="개인정보처리방침 동의" />
+			<FormGroup row>
+				<FormControlLabel control={<Checkbox />} label={ label.agree1 } />
+				<FormControlLabel control={<Checkbox />} label={ label.agree2 } />
 			</FormGroup>
 			
 			<Button variant="contained" size="large" onClick={onSignUp}>
-				가입하기
+				{ label.signupBtn }
 			</Button>
 		</Box>
 	);

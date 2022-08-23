@@ -49,11 +49,11 @@ export const SITE_MESSAGE = {};
 export const SITE_MENU:defaultObject = {
 	register : {
 		label: "등록하기",
-		link: "/"
+		link: "/register"
 	},
 	case : {
 		label: "이용사례",
-		link: "/"
+		link: "/case"
 	},
 	partner : {
 		label: "파트너사",
@@ -61,15 +61,23 @@ export const SITE_MENU:defaultObject = {
 	},
 	store : {
 		label: "스토어",
-		link: "/"
+		link: "/store"
 	}
 };
 
 export const SITE_TYPO = {
-	FORM_LOGIN: {
+	FORM_AUTH: {
 		label: {
+			signin: "로그인",
+			signup: "회원가입",
 			email: "E-mail",
 			password: "Password",
+			agree1: "이용약관 동의",
+			agree2: "개인정보처리방침 동의",
+			signupBtn: "가입하기",
+			checkCountPassword: "(8자리 이상)",
+			findEmail: "가입된 이메일 찾기",
+			findPassword: "비밀번호 찾기",
 		},
 		required: {
 			err_email: "이메일을 확인해주세요.",
@@ -77,14 +85,14 @@ export const SITE_TYPO = {
 			chk_password: "비밀번호가 다릅니다. 다시입력해주세요.",
 		},
 		placeholder: {
-			email: "이메일을 입력해주세요.",
+			email: "이메일 주소를 입력해주세요.",
 			password: "비밀번호를 입력해주세요.",
 			chk_password: "비밀번호를 한번 더 입력해주세요.",
 		},
-		button: {
-			login: "로그인",
-			signup: "회원가입",
-		},
+		// button: {
+		// 	login: "로그인",
+		// 	signup: "회원가입",
+		// },
 	},
 	FORM_COMPANY: {
 		label: {

@@ -13,14 +13,19 @@ const Sample2: NextPage<ItemProps> = () => {
 	return (
 		<Box
 			sx={{
-				m: "50px auto",
-				width: "800px",
+				color: "white",
+				fontSize: "2rem",
+				fontWeight: "bold",
+				p: "80px",
+				// m: "50px auto",
+				// width: "800px",
 				textAlign: "center",
-				"& *": { color: "black", fontWeight: "500" },
-				"& .MuiTypography-root": { m: "25px 0" },
+				// "& *": { color: "black", fontWeight: "500" },
+				// "& .MuiTypography-root": { m: "25px 0" },
+				"& h5": { p: "50px", fontSize: "2rem", fontWeight: "bold" },
 			}}
 		>
-			<Typography variant="h5" gutterBottom component="div">
+			<Typography variant="h5" gutterBottom>
 				주요 기능 사용법
 			</Typography>
 			
