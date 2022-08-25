@@ -20,6 +20,7 @@ import Sample2 from "@components/etc/sample2";
 import Sample3 from "@components/etc/sample3";
 import Loading from "@components/etc/Loading";
 import Sample4 from "@components/etc/sample4";
+import SubMemu from "@components/Menu/subMenu";
 
 const Home: NextPage = () => {
 	const router = useRouter();
@@ -64,9 +65,10 @@ const Home: NextPage = () => {
 			
 			<Container maxWidth={ false } sx={ { mr: 0, width: "100%" } }>
 				<Header isLogin={ isLoginState } onSignOut={ onSignOut }/>
+				<SubMemu />
 			</Container>
 			
-			<Box sx={{ pt: "72px" }}>
+			<Box sx={{ pt: "144px", fontSize: 0, backgroundColor: "white" }}>
 				<Sample4 />
 			</Box>
 			

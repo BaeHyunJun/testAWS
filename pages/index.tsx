@@ -56,7 +56,10 @@ const Home: NextPage = () => {
   }
   
   const onChangeScroll = () => {
-    console.log("스크롤 이동")
+    const section2 = window.document.querySelector("#section2");
+  
+    window.scrollTo({ top: 725, behavior: "smooth" })
+    // window.scrollTo({ top: section2 ? section2.getBoundingClientRect().top : 0, behavior: "smooth" })
   }
   
   
@@ -93,7 +96,7 @@ const Home: NextPage = () => {
         />
       </Divider>
       
-      <Box sx={{ backgroundColor: "#5371f4" }}>
+      <Box id={"section2"} sx={{ backgroundColor: "#5371f4" }}>
         <Sample2/>
       </Box>
       {/*<Box sx={ { backgroundColor: "white" } }>*/}

@@ -6,7 +6,7 @@ import {
 	Box,
 	Container,
 	CssBaseline,
-	CircularProgress, Chip,
+	CircularProgress, TableRow, TableHead, Table, TableCell, Typography, TableBody,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -21,33 +21,21 @@ import Sample2 from "@components/etc/sample2";
 import Sample3 from "@components/etc/sample3";
 import Loading from "@components/etc/Loading";
 import CategoryBox from "@components/Menu/categoryBox";
-import OpenRecent from "@components/List/openRecent";
+import ListBox from "@components/List/register";
 
 const categoryMenu = {
 	a: {
-		label: "교육생"
+		label: "준비 (0)"
 	},
 	b: {
-		label: "강사"
+		label: "모집 (0)"
 	},
 	c: {
-		label: "서포터즈"
+		label: "종료 (0)"
 	},
-	d: {
-		label: "공모전"
-	},
-	e: {
-		label: "이벤트"
-	},
-	f: {
-		label: "동아리"
-	},
-	g: {
-		label: "기타"
-	}
 }
 
-const Home: NextPage = () => {
+const List: NextPage = () => {
 	const router = useRouter();
 	const [isLoginState, setIsLoginState] = useState(false);
 	const [uiState, setUiState] = useState<string>('');
@@ -95,22 +83,15 @@ const Home: NextPage = () => {
 			
 			<Box sx={{ pt: "144px", fontSize: 0, backgroundColor: "white" }}>
 				<Container sx={{ p: 3 }}>
-					<CategoryBox title={"어떤 모집을 하시나요?"} data={categoryMenu} />
+					<CategoryBox data={categoryMenu} />
 					
-					<Box sx={{ py: 8, textAlign: "center" }}>
-						<iframe width="560" height="315" src="https://www.youtube.com/embed/JaamuJV6sNA" title="YouTube video player"
-						        frameBorder="0"
-						        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						        allowFullScreen></iframe>
-					</Box>
+					<ListBox />
 				</Container>
 			</Box>
-			
-			<OpenRecent />
 			
 			<Footer/>
 		</ThemeProvider>
 	}
 };
 
-export default Home;
+export default List;

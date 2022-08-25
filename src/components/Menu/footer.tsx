@@ -34,7 +34,7 @@ const Header: NextPage<ItemProps> = () => {
 				'& .MuiToolbar-root': { width: "1200px", m: "0 auto" },
 				'& .fnb': { flexGrow: 1, display: "flex" },
 				'& .areaText': { p: "10px 20px 30px" },
-				'& .MuiButton-root': { m: 2, color: 'black', display: 'block', fontSize: "16px" },
+				'& .MuiButton-root': { m: 2, color: 'black', display: 'block', fontSize: "16px", backgroundColor: "transparent" },
 				'& .MuiButton-root:hover': { backgroundColor: "transparent" },
 			}}
 		>

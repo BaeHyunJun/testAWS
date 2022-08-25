@@ -7,6 +7,7 @@ import {
 	Container,
 	CssBaseline,
 	CircularProgress,
+    Grid,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -20,6 +21,11 @@ import Sample2 from "@components/etc/sample2";
 import Sample3 from "@components/etc/sample3";
 import Loading from "@components/etc/Loading";
 import Sample4 from "@components/etc/sample4";
+import Banner from "@components/Banner/listBottom";
+import Side from "@components/Side/partners";
+import SubHeader from "@components/Menu/subHeader";
+import OrderBox from "@components/Menu/orderBox";
+import Partners from "@components/List/partners";
 
 const Home: NextPage = () => {
 	const router = useRouter();
@@ -66,9 +72,23 @@ const Home: NextPage = () => {
 				<Header isLogin={ isLoginState } onSignOut={ onSignOut }/>
 			</Container>
 			
-			<Box sx={{ pt: "72px" }}>
-				<Sample4 />
+			<Box sx={{ pt: "72px", fontSize: 0, backgroundColor: "white" }}>
+				<Container>
+					<SubHeader title={"파트너사 찾기"} description={"9,876개의 파트너사가 있습니다."} />
+					<OrderBox />
+					
+					<Grid container>
+						<Grid item xs={3} sx={{ p: 2, fontSize: "1px" }}>
+							<Side />
+						</Grid>
+						<Grid item xs={9}>
+							<Partners />
+						</Grid>
+					</Grid>
+				</Container>
 			</Box>
+			
+			<Banner />
 			
 			<Footer/>
 		</ThemeProvider>

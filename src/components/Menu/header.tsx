@@ -20,11 +20,14 @@ type ItemProps = {
 
 const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
   const router = useRouter();
-  const [menuState, setMenuState] = useState('default')
+  const [menuState, setMenuState] = useState('default');
+  const [pathState, setPathState] = useState<string>("");
   
   useEffect(()=> {
     // const currentPageType = router.query.type;
     const currentPage = router.pathname;
+    const pathName = router.pathname.split("/");
+    setPathState(pathName[1])
     
     // if (currentPageType == "SignIn") {
     if (currentPage === "/authentication") {
@@ -45,7 +48,8 @@ const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
         '& .logoBox': { width: 150 },
         '& .MuiToolbar-root': { width: "1200px", margin:"0 auto" },
         '& .gnb': { flexGrow: 1, display: "flex" },
-        '& .MuiButton-root': { m: 2, color: 'black', display: 'block', fontSize: "16px" },
+        '& .MuiButton-root': { m: 2, color: 'black', display: 'block', fontSize: "16px", backgroundColor: "transparent" },
+        '& .MuiButton-root.active': { color: "#5471f3", fontWeight: "900" },
         '& .MuiButton-root:hover': { backgroundColor: "transparent" },
       }}
     >
@@ -63,7 +67,7 @@ const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
             // menuState === "default" &&
             Object.keys(SITE_MENU).map((dat:any) => {
               return (
-                <Button key={dat}>
+                <Button key={dat} className={pathState == dat ? "active" : ""}>
                   <Link href={ SITE_MENU[dat].link }>
                     <a>
                       { SITE_MENU[dat].label }
