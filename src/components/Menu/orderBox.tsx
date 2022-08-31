@@ -8,9 +8,10 @@ import Image from "next/image";
 import { Pages } from "@mui/icons-material";
 
 type ItemProps = {
+	data: any
 };
 
-const OrderBox: NextPage<ItemProps> = () => {
+const OrderBox: NextPage<ItemProps> = ({ data }) => {
 	return (
 		<Box
 			sx={{
@@ -19,10 +20,7 @@ const OrderBox: NextPage<ItemProps> = () => {
 				"& .MuiChip-root": { m: 1, borderRadius: "8px" },
 			}}
 		>
-			<Chip label="기본정렬" />
-			<Chip label="업데이트순" />
-			<Chip label="평점높은순" />
-			<Chip label="포트폴리오순" />
+			{ Object.keys(data).map((dat: any, idx: number) => <Chip key={idx} label={data[dat]} />) }
 		</Box>
 	);
 };

@@ -9,7 +9,7 @@ import { Pages } from "@mui/icons-material";
 
 type ItemProps = {
 	title: string,
-	description: string,
+	description?: string,
 };
 
 const SubHeader: NextPage<ItemProps> = ({title, description}) => {
@@ -26,9 +26,13 @@ const SubHeader: NextPage<ItemProps> = ({title, description}) => {
 			<Typography variant={"h5"}>
 				{ title }
 			</Typography>
-			<Typography variant={"subtitle1"}>
-				{ description }
-			</Typography>
+			{
+				description && (
+					<Typography variant={"subtitle1"}>
+						{ description }
+					</Typography>
+				)
+			}
 		</Box>
 	);
 };

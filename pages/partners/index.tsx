@@ -60,6 +60,13 @@ const Home: NextPage = () => {
 		}
 	}
 	
+	const dat = {
+		a: "기본정렬",
+		b: "업데이트순",
+		c: "평점높은순",
+		d: "포트폴리오순",
+	}
+	
 	if (!uiState) {
 		return <></>
 	} else if (uiState == "loading") {
@@ -75,7 +82,7 @@ const Home: NextPage = () => {
 			<Box sx={{ pt: "72px", fontSize: 0, backgroundColor: "white" }}>
 				<Container>
 					<SubHeader title={"파트너사 찾기"} description={"9,876개의 파트너사가 있습니다."} />
-					<OrderBox />
+					<OrderBox data={dat} />
 					
 					<Grid container>
 						<Grid item xs={3} sx={{ p: 2, fontSize: "1px" }}>

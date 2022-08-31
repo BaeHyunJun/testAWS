@@ -37,19 +37,23 @@ import Image from "next/image";
 import DownloadIcon from "@mui/icons-material/Download";
 import CloseIcon from "@mui/icons-material/Close";
 
-const Home: NextPage = () => {
+const Post: NextPage = () => {
 	const router = useRouter();
 	const [isLoginState, setIsLoginState] = useState(false);
 	const [uiState, setUiState] = useState<string>('');
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 	const [formState, setFormState] = useState({
-		email: '', password: '', authCode: ''
+		title: '', email: '', password: '', authCode: ''
 	});
-	const { email, password, authCode } = formState;
+	const { title, email, password, authCode } = formState;
 	
 	useEffect(() => {
 		checkUser();
 	}, []);
+	
+	const onChange = (e?: any) => {
+		setFormState({ ...formState, [e.target.name]: e.target.value});
+	}
 	
 	const checkUser = async () => {
 		setUiState('loading');
@@ -95,11 +99,15 @@ const Home: NextPage = () => {
 					>
 						<Image src={"/icon/register.png"} alt={""} width={30} height={30} />
 						<TextField
+							id="title"
+							name="title"
 							variant="standard"
 							placeholder="새로운 모집 신청 작성하기"
 							InputProps={{
 								endAdornment: <Image src={"/icon/pencil.png"} alt={""} width={30} height={30} />
 							}}
+							onChange={onChange}
+							value={title}
 						/>
 					</Box>
 				</Container>
@@ -114,7 +122,7 @@ const Home: NextPage = () => {
 				<Grid container>
 					<Grid item xs={6}>
 						<Card>
-							<CardHeader title="동아리 모집 신청서 미리보기" />
+							<CardHeader title={title ? title : "제목을 입력해주세요."} />
 							<CardContent>
 								<Table>
 									<colgroup>
@@ -208,11 +216,16 @@ const Home: NextPage = () => {
 								sx={{
 									mb: 3,
 									"& .MuiTypography-subtitle1": { fontSize: "1.2rem" },
-									"& .MuiChip-root": { m: 0, my: 2, p: 4, width: "100%", fontSize: "1.4rem" }
+									"& .MuiTextField-root": { width: "100%", fontSize: "1.4rem", backgroundColor: "white", border: "1px solid #aaa" },
 								}}
 							>
 								<Typography variant={"subtitle1"}>제목</Typography>
-								<Chip label={"제목을 입력해주세요."}/>
+								<TextField
+									name="title"
+									placeholder={"제목을 입력해주세요."}
+									value={title}
+									onChange={onChange}
+								/>
 							</Box>
 							<Box
 								sx={{
@@ -280,4 +293,4 @@ const Home: NextPage = () => {
 	}
 };
 
-export default Home;
+export default Post;
