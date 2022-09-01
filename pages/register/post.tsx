@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -92,19 +92,19 @@ const Post: NextPage = () => {
 	const [test123, setTest123] = useState<moaLine[]>(testForm);
 	
 	const removeElement = (data: any[], index: number) => {
-		setTest123((state) => {
-			const temp = test123.filter((dat: moaLine, idx:number) => idx == index)[0].elGroup = data;
-
-			console.log(data);
-			console.log(temp);
-			console.log(test123);
-			
-			setTest123(test123);
-			
-			return test123;
-		})
+		let temp = JSON.parse(JSON.stringify(test123));
 		
-		// setTest123(test123);
+		let sd = temp.filter((dat: moaLine, idx:number) => idx == index)[0];//
+		
+		// .elGroup = data;
+		
+		console.log(sd);
+		// console.log(test123);
+		
+		// setTest123((state: moaLine[]) => ({
+		// 	...state,
+		// 	temp
+		// }));
 	}
 	
 	// console.log(test123);
