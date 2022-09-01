@@ -48,7 +48,7 @@ const DropLine: NextPage<ItemProps> = ({no, elGroup, onRemove}) => {
 		onRemove(temp, no - 1);
 	}
 	
-	console.log(elements);
+	// console.log(elements);
 	
 	return elements.length > 0 ? (
 		<Box
@@ -96,7 +96,7 @@ const DropLine: NextPage<ItemProps> = ({no, elGroup, onRemove}) => {
 				list={elements}
 				setList={(newState: moaElements[]) => setElements(newState)}
 			>
-				{elements.filter((el:moaElements) => el.isRemove === false).map((el: moaElements, index: number) => (
+				{elements.map((el: moaElements, index: number) => (
 					<DropItem key={index} el={el} onRemove={onRemoveHandle} />
 				))}
 			</ReactSortable>

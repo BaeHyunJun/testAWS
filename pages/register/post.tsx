@@ -198,15 +198,20 @@ const Post: NextPage = () => {
 										return flag
 									})
 									
+									// console.log(test);
+									// console.log(newState);
+
 									if (test.length > 0) {
 										const order = newState.findIndex((data: any) => data === test[0]);
-										
+
 										const newItem:moaLine = {
 											id: test123.length + 1,
 											elGroup: test
 										}
-										
+
 										const newList = test123.splice(order, 0, newItem);
+										
+										// setTest123(newList);
 									} else {
 										setTest123(newState);
 									}
