@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 
 import {
@@ -36,6 +36,10 @@ const DropLine: NextPage<ItemProps> = ({no, elGroup, onRemove}) => {
 	
 	const [elements, setElements] = useState<moaElements[]>(elGroup ? elGroup : []);
 	
+	useEffect(() => {
+		setElements(elGroup);
+	}, [elGroup])
+	
 	const onRemoveHandle = (index: number) => {
 		const temp = elGroup.filter((dat: moaElements, idx:number) => idx != index);
 		
@@ -44,6 +48,7 @@ const DropLine: NextPage<ItemProps> = ({no, elGroup, onRemove}) => {
 		onRemove(temp, no - 1);
 	}
 	
+	console.log(elements);
 	
 	return elements.length > 0 ? (
 		<Box

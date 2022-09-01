@@ -91,23 +91,17 @@ const Post: NextPage = () => {
 	const [interestElements, setInterestElements] = useState<moaElements[]>(interestElementList);
 	const [test123, setTest123] = useState<moaLine[]>(testForm);
 	
+	// useEffect(() => {
+	// 	console.log(test123);
+	// }, [test123])
+	
 	const removeElement = (data: any[], index: number) => {
 		let temp = JSON.parse(JSON.stringify(test123));
 		
-		let sd = temp.filter((dat: moaLine, idx:number) => idx == index)[0];//
+		temp.filter((dat: moaLine, idx:number) => idx == index)[0].elGroup = data;
 		
-		// .elGroup = data;
-		
-		console.log(sd);
-		// console.log(test123);
-		
-		// setTest123((state: moaLine[]) => ({
-		// 	...state,
-		// 	temp
-		// }));
+		setTest123(temp);
 	}
-	
-	// console.log(test123);
 	
 	if (!uiState) {
 		return <></>

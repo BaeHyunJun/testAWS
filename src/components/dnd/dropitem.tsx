@@ -33,8 +33,6 @@ const DropItem: NextPage<ItemProps> = ({ el, onRemove }) => {
 		onRemove(element.id - 1);
 	}
 	
-	// console.log("DropItem : ", el, element);
-	
 	const createElements = (props: moaElements) => {
 		const { label, el, placeholder } = props;
 		
