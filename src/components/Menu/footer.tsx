@@ -48,7 +48,7 @@ const Header: NextPage<ItemProps> = () => {
 			</Toolbar>
 			<Toolbar disableGutters>
 				<Box className={"areaText"}>
-					<Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/logo.png"} alt={"로고"} width={70} height={20} />
+					<img src={"https://moacube.s3.ap-northeast-2.amazonaws.com/logo.png"} alt={"로고"} width={70} height={20} />
 					<Grid container>
 						<Grid item xs={2.5}>
 							<Typography variant={"subtitle1"}>대표 : 강상훈</Typography>

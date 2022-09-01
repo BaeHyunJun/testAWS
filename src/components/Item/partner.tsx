@@ -33,7 +33,7 @@ const Partner: NextPage<ItemProps> = () => {
 			}}
 		>
 			<ListItemAvatar>
-				<Image className={"partnerLogo"} src={"/banner_listBottom.png"} alt={"로고"} width={100} height={100} />
+				<img className={"partnerLogo"} src={"https://moacube.s3.ap-northeast-2.amazonaws.com/banner_listBottom.png"} alt={"로고"} width={100} height={100} />
 			</ListItemAvatar>
 			<ListItemText
 				sx={{
