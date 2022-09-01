@@ -22,7 +22,7 @@ import {
 import { ThemeProvider } from "@mui/material/styles";
 
 import { authCurrentUser, authSignOut } from "@config/auth";
-import { YDR_THEME } from "@config/const";
+import { elementList, interestElementList, moaElements, moaLine, testForm, YDR_THEME } from "@config/const";
 
 import Footer from "@components/Menu/footer";
 import Header from "@components/Menu/header";
@@ -36,6 +36,15 @@ import { AccountCircle } from "@mui/icons-material";
 import Image from "next/image";
 import DownloadIcon from "@mui/icons-material/Download";
 import CloseIcon from "@mui/icons-material/Close";
+import DropLine from "@components/dnd/dropline";
+import {
+	DragDropContext, Draggable,
+	DraggableProvided, DraggableStateSnapshot,
+	Droppable,
+	DroppableProvided,
+	DroppableStateSnapshot
+} from "react-beautiful-dnd";
+import { ReactSortable } from "react-sortablejs";
 
 const Post: NextPage = () => {
 	const router = useRouter();
@@ -73,6 +82,32 @@ const Post: NextPage = () => {
 			router.push("/");
 		}
 	}
+	
+	// const onDragEnd = () => {
+	// 	console.log("드래그앤드롭");
+	// }
+	
+	const [elements, setElements] = useState<moaElements[]>(elementList);
+	const [interestElements, setInterestElements] = useState<moaElements[]>(interestElementList);
+	const [test123, setTest123] = useState<moaLine[]>(testForm);
+	
+	const removeElement = (data: any[], index: number) => {
+		setTest123((state) => {
+			const temp = test123.filter((dat: moaLine, idx:number) => idx == index)[0].elGroup = data;
+
+			console.log(data);
+			console.log(temp);
+			console.log(test123);
+			
+			setTest123(test123);
+			
+			return test123;
+		})
+		
+		// setTest123(test123);
+	}
+	
+	// console.log(test123);
 	
 	if (!uiState) {
 		return <></>
@@ -116,93 +151,77 @@ const Post: NextPage = () => {
 			<Container
 				sx={{
 					pt: 8,
-					"& .MuiCard-root": { border: "1px solid" }
+					"& .moaForm": {
+						position: "absolute",
+						top: "64px",
+						left: 0,
+						right: 0,
+						bottom: 0,
+						overflowY: "auto",
+					},
+					"& .MuiCard-root": {
+						position: "relative",
+						border: "1px solid",
+						minHeight: "700px",
+					},
+					"& .chosen": {
+						cursor: "grabbing",
+					},
+					"& .highlight": {
+						p: 0,
+						px: 4,
+						width: "100%",
+						height: "50px",
+						listStyle: "none",
+					},
+					"& .highlight > *": {
+						py: 2,
+						border: "1px dashed blue",
+						backgroundColor: "rgba(0, 0, 255, .1)",
+					},
 				}}
 			>
 				<Grid container>
 					<Grid item xs={6}>
 						<Card>
 							<CardHeader title={title ? title : "제목을 입력해주세요."} />
-							<CardContent>
-								<Table>
-									<colgroup>
-										<col width={"20%"} />
-										<col />
-									</colgroup>
-									<TableBody>
-										<TableRow>
-											<TableCell>
-												이름
-											</TableCell>
-											<TableCell>
-												김모아
-											</TableCell>
-										</TableRow>
-										<TableRow>
-											<TableCell>
-												생년월일
-											</TableCell>
-											<TableCell>
-												1982.08.02
-											</TableCell>
-										</TableRow>
-										<TableRow>
-											<TableCell>
-												연락처
-											</TableCell>
-											<TableCell>
-												010-1234-5678
-											</TableCell>
-										</TableRow>
-										<TableRow>
-											<TableCell>
-												이메일
-											</TableCell>
-											<TableCell>
-												moacube@gmail.com
-											</TableCell>
-										</TableRow>
-										<TableRow>
-											<TableCell>
-												주소
-											</TableCell>
-											<TableCell>
-												부산광역시 연제구 법원남로 9번길 17
-											</TableCell>
-										</TableRow>
-									</TableBody>
-								</Table>
-								<Box
-									sx={{
-										py:4,
-										textAlign: "center",
-										"& .areaDate": { my: 3, mx: "auto", py: "3px", backgroundColor: "#efefef", width: "300px"},
-										"& .areaSign": { mt: 10, ml: "auto", py: "3px", backgroundColor: "#efefef", width: "250px"}
-									}}
-								>
-									<Typography variant="body1">모집 신청서를 제출합니다.</Typography>
+							<ReactSortable
+								group={"shared"}
+								className={"moaForm"}
+								ghostClass={"highlight"}
+								handle={".sortHandle"}
+								direction={"vertical"}
+								list={test123}
+								setList={(newState: any, sortable, store) => {
 									
-									<Box className={"areaDate"}>
-										<Grid container>
-											<Grid item xs={3}>(신청일)</Grid>
-											<Grid item xs={3}></Grid>
-											<Grid item xs={1}>년</Grid>
-											<Grid item xs={1.5}></Grid>
-											<Grid item xs={1}>월</Grid>
-											<Grid item xs={1.5}></Grid>
-											<Grid item xs={1}>일</Grid>
-										</Grid>
-									</Box>
+									const test:moaElements[] = newState.filter((data: moaLine, index: number) => {
+										let flag = true;
+										
+										if (data.elGroup) {
+											flag = false
+										}
+										
+										return flag
+									})
 									
-									<Box className={"areaSign"}>
-										<Grid container>
-											<Grid item xs={4}>(성명)</Grid>
-											<Grid item xs={4}></Grid>
-											<Grid item xs={4}>(서명)</Grid>
-										</Grid>
-									</Box>
-								</Box>
-							</CardContent>
+									if (test.length > 0) {
+										const order = newState.findIndex((data: any) => data === test[0]);
+										
+										const newItem:moaLine = {
+											id: test123.length + 1,
+											elGroup: test
+										}
+										
+										const newList = test123.splice(order, 0, newItem);
+									} else {
+										setTest123(newState);
+									}
+								}}
+							>
+								{test123.map((elLine: moaLine, index: number) => (
+									<DropLine key={elLine.id} no={elLine.id} elGroup={elLine.elGroup} onRemove={removeElement} />
+								))}
+							</ReactSortable>
 						</Card>
 					</Grid>
 					<Grid item xs={6}>
@@ -232,18 +251,29 @@ const Post: NextPage = () => {
 									mb: 3,
 									"& .MuiTypography-subtitle1": { fontSize: "1.2rem" },
 									"& .moduleList": { my: 2, p: 3, width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "space-between", border: "1px solid #666", backgroundColor: "white" },
-									"& .moduleList li": { m: "1%", p: 2, textAlign: "center", fontSize: "1rem", border: "1px solid #666", listStyle: "none", width: "30%" }
+									"& .moduleList li": { m: "1%", p: 2, cursor: "grab", textAlign: "center", fontSize: "1rem", border: "1px solid #666", listStyle: "none", width: "30%" }
 								}}
 							>
 								<Typography variant={"subtitle1"}>많이 사용하는 목록</Typography>
-								<ul className={"moduleList"}>
-									<li>이름</li>
-									<li>생년월일</li>
-									<li>주소</li>
-									<li>연락처</li>
-									<li>이메일</li>
-									<li>성별</li>
-								</ul>
+								<ReactSortable
+									group={{
+										name: "shared",
+										pull: "clone",
+									}}
+									sort={false}
+									chosenClass={"chosen"}
+									list={interestElements}
+									className={"moduleList"}
+									setList={(newState: moaElements[]) => setInterestElements(newState)}
+								>
+									{interestElements.map((element: any, index: number) => (
+										<li key={element.id}>
+											<Typography variant={"body1"}>
+												{element.label}
+											</Typography>
+										</li>
+									))}
+								</ReactSortable>
 							</Box>
 							<Box
 								sx={{
@@ -254,14 +284,35 @@ const Post: NextPage = () => {
 								}}
 							>
 								<Typography variant={"subtitle1"}>추가할 목록</Typography>
-								<ul className={"moduleList"}>
-									<li>통장</li>
-									<li>프로필 사진</li>
-									<li>경력</li>
-									<li>텍스트</li>
-									<li>테두리 없음</li>
-									<li>체크 박스</li>
-								</ul>
+								
+								<ReactSortable
+									group={{
+										name: "shared",
+										pull: "clone",
+									}}
+									sort={false}
+									chosenClass={"chosen"}
+									list={elements}
+									className={"moduleList"}
+									setList={(newState: moaElements[]) => setElements(newState)}
+								>
+									{elements.map((element: any, index: number) => (
+										<li key={element.id}>
+											<Typography variant={"body1"}>
+												{element.label}
+											</Typography>
+										</li>
+									))}
+								</ReactSortable>
+								
+								{/*<ul className={"moduleList"}>*/}
+								{/*	<li>통장</li>*/}
+								{/*	<li>프로필 사진</li>*/}
+								{/*	<li>경력</li>*/}
+								{/*	<li>텍스트</li>*/}
+								{/*	<li>테두리 없음</li>*/}
+								{/*	<li>체크 박스</li>*/}
+								{/*</ul>*/}
 							</Box>
 							
 							<Chip label={"신청일"}/>

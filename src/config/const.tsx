@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material/styles";
+import { Author, Id } from "@components/test/types";
 
 interface defaultObject {
 	[index: string]: any,
@@ -9,6 +10,150 @@ interface defaultString {
 	label: string,
 	link: string,
 }
+
+export type moaElements = {
+	id: number,
+	label: string,
+	el: string,
+	placeholder?: string,
+	isRemove?: boolean,
+};
+
+export type moaLine = {
+	id: number,
+	elGroup: moaElements[],
+}
+
+export const elementList: moaElements[] = [
+	{
+		id: 1,
+		label: "통장",
+		el: "TextField",
+	},
+	{
+		id: 2,
+		label: "프로필 사진",
+		el: "TextField",
+	},
+	{
+		id: 3,
+		label: "경력",
+		el: "TextField",
+	},
+	{
+		id: 4,
+		label: "텍스트",
+		el: "TextField",
+	},
+	{
+		id: 5,
+		label: "테두리 없음",
+		el: "TextField",
+	},
+	{
+		id: 6,
+		label: "체크 박스",
+		el: "Sex",
+		// placeholder: "1982.08.02",
+	}
+]
+
+export const interestElementList: moaElements[] = [
+	{
+		id: 1,
+		label: "이름",
+		el: "TextField",
+		placeholder: "김모아",
+	},
+	{
+		id: 2,
+		label: "생년월일",
+		el: "TextField",
+		placeholder: "1982.08.02",
+	},
+	{
+		id: 3,
+		label: "주소",
+		el: "TextField",
+		placeholder: "부산광역시 연제구 법원남로 9번길 17",
+	},
+	{
+		id: 4,
+		label: "연락처",
+		el: "TextField",
+		placeholder: "010-1234-5678",
+	},
+	{
+		id: 5,
+		label: "이메일",
+		el: "TextField",
+		placeholder: "moacube@gmail.com",
+	},
+	{
+		id: 6,
+		label: "성별",
+		el: "Sex",
+		// placeholder: "1982.08.02",
+	}
+]
+
+export const testForm:moaLine[] = [
+	{
+		id: 1,
+		elGroup: [
+			{
+				id: 1,
+				label: "이름",
+				el: "TextField",
+				placeholder: "김모아",
+				isRemove: false,
+			},
+			{
+				id: 2,
+				label: "생년월일",
+				el: "TextField",
+				placeholder: "1982.08.02",
+				isRemove: false,
+			}
+		]
+	},
+	{
+		id: 2,
+		elGroup: [
+			{
+				id: 1,
+				label: "연락처",
+				el: "TextField",
+				placeholder: "010-1234-5678",
+				isRemove: false,
+			}
+		]
+	},
+	{
+		id: 3,
+		elGroup: [
+			{
+				id: 1,
+				label: "이메일",
+				el: "TextField",
+				placeholder: "moacube@gmail.com",
+				isRemove: false,
+			}
+		]
+	},
+	{
+		id: 4,
+		elGroup: [
+			{
+				id: 1,
+				label: "주소",
+				el: "TextField",
+				placeholder: "부산광역시 연제구 법원남로 9번길 17",
+				isRemove: false,
+			}
+		]
+	}
+]
 
 
 export const YDR_THEME = createTheme({
