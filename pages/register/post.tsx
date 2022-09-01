@@ -126,14 +126,14 @@ const Post: NextPage = () => {
 							"& .MuiTextField-root": { mx: 2, width: 300 }
 						}}
 					>
-						<Image src={"/icon/register.png"} alt={""} width={30} height={30} />
+						<Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/register.png"} alt={""} width={30} height={30} />
 						<TextField
 							id="title"
 							name="title"
 							variant="standard"
 							placeholder="새로운 모집 신청 작성하기"
 							InputProps={{
-								endAdornment: <Image src={"/icon/pencil.png"} alt={""} width={30} height={30} />
+								endAdornment: <Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/pencil.png"} alt={""} width={30} height={30} />
 							}}
 							onChange={onChange}
 							value={title}

@@ -58,7 +58,7 @@ const SelectType: NextPage<ItemProps> = ({ open, handleClose }) => {
 						<Button>
 							<Link href={"/register/post"}>
 								<a>
-									<Image src={"/icon/register.png"} alt={"모집신청"} width={100} height={100} />
+									<Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/register.png"} alt={"모집신청"} width={100} height={100} />
 									<Typography variant={"caption"}>모집신청</Typography>
 								</a>
 							</Link>
@@ -68,7 +68,7 @@ const SelectType: NextPage<ItemProps> = ({ open, handleClose }) => {
 						<Button sx={{ ml:"auto" }}>
 							<Link href={"/register/event"}>
 								<a>
-									<Image src={"/icon/event.png"} alt={"이벤트"} width={100} height={100} />
+									<Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/event.png"} alt={"이벤트"} width={100} height={100} />
 									<Typography variant={"caption"}>이벤트</Typography>
 								</a>
 							</Link>

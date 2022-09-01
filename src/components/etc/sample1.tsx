@@ -41,7 +41,7 @@ const Sample1: NextPage<ItemProps> = () => {
 			{/*	</Box>*/}
 			{/*	<Typography variant="h4">쉽고 빠르게 만들고 검색할 수 있습니다.</Typography>*/}
 			{/*</Box>*/}
-			<Image src={"/main_top.png"} alt={""} width={"1920"} height={"867"} style={{ display: "block" }} />
+			<Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/main_top.png"} alt={""} width={"1920"} height={"867"} style={{ display: "block" }} />
 			<Box className={"areaBtn"}>
 				<Button>
 					<Link href={"/authentication?type=SignIn"}>

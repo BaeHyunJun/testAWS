@@ -33,7 +33,7 @@ const ListBottom: NextPage<ItemProps> = () => {
 				}
 			}}
 		>
-			<Image src={"/banner_listBottom.png"} alt={"배너"} width={1600} height={320} />
+			<Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/banner_listBottom.png"} alt={"배너"} width={1600} height={320} />
 			
 			<Box className={"areaBtn"}>
 				<Button>

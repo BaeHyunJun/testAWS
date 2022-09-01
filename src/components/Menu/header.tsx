@@ -58,7 +58,7 @@ const Header: NextPage<ItemProps> = ( { isLogin = false, onSignOut} ) => {
           {/*<Box className={"logo"}/>*/}
           <Link href={"/"}>
             <a>
-              <Image src={"/logo.png"} alt={"로고"} width={100} height={30} />
+              <Image src={"https://moacube.s3.ap-northeast-2.amazonaws.com/logo.png"} alt={"로고"} width={100} height={30} />
             </a>
           </Link>
         </Box>

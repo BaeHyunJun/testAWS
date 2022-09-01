@@ -86,7 +86,7 @@ const Recent: NextPage<ItemProps> = ({ title, src, onModal }) => {
 				:
 					<CardMedia
 						component="div"
-						image={"/icon/new.png"}
+						image={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/new.png"}
 						sx={{ p: 10, backgroundColor: "#e2e5ec", backgroundSize: "50%" }}
 					/>
 			}
