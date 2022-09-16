@@ -1,6 +1,23 @@
 import { createTheme } from "@mui/material/styles";
 import { Author, Id } from "@components/test/types";
 
+export enum API {
+	// DOMAIN="http://1.234.5.16:8585/",
+	// DOMAIN = "http://211.37.179.192:8585/",
+	// DOMAIN = "http://localhost:8585/",
+	DOMAIN = "https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/",
+	VERSION = "v1",
+	FORM = "form",
+	// LOGIN = "/user/login",
+	// LOGOUT = "/user/logout",
+	// CHECKLOGIN = "/user/islogin",
+	// FILTER = "/common/filter/",
+	// SEARCH = "/auction/search/",
+	// PRODUCT = "/auction/",
+	// KAKAO_API_KEY = "38606d651a3071f9595b916641be1988",
+	// // KAKAO_API_KEY="df5c0cdd518cfe4c738ea669381c19ef",
+}
+
 interface defaultObject {
 	[index: string]: any,
 }
@@ -10,6 +27,184 @@ interface defaultString {
 	label: string,
 	link: string,
 }
+
+export type elementItem = {
+	id: number;
+	label: string;
+	element: string;
+	order?: number;
+	placeholder?: string;
+	value?: string;
+	children?: any;
+}
+
+export type elementLine = {
+	id: number;
+	order?: number;
+	items: elementItem[];
+}
+
+const eName: elementItem = {
+	id: 1,
+	label: "이름",
+	element: "Text",
+	placeholder: "김모아",
+};
+
+const eBirthDay: elementItem = {
+	id: 2,
+	label: "생년월일",
+	element: "Text",
+	placeholder: "1982.08.02",
+};
+
+const eAddress: elementItem = {
+	id: 3,
+	label: "주소",
+	element: "Text",
+	placeholder: "부산광역시 연제구 법원남로 9번길 17",
+};
+
+const ePhone: elementItem = {
+	id: 4,
+	label: "연락처",
+	element: "Text",
+	placeholder: "010-1234-5678",
+};
+
+const eMail: elementItem = {
+	id: 5,
+	label: "이메일",
+	element: "Text",
+	placeholder: "moacube@gmail.com",
+};
+
+const eSex: elementItem = {
+	id: 6,
+	label: "성별",
+	element: "Sex",
+	value: "male",
+	children: [
+		{
+			id: 1,
+			order: 1,
+			label: "남자",
+			value: "male"
+		},
+		{
+			id: 2,
+			order: 2,
+			label: "여자",
+			value: "female"
+		}
+	]
+}
+
+const eSpace: elementItem = {
+	id: 7,
+	label: "여백",
+	element: "Space",
+	value: "12"
+}
+
+const eNotice: elementItem = {
+	id: 8,
+	label: "안내글",
+	element: "Notice",
+}
+
+const eAgree: elementItem = {
+	id: 9,
+	label: "약관",
+	element: "Agree",
+}
+
+export const elementsGroup: elementItem[] =[
+	eName,
+	eBirthDay,
+	eAddress,
+	ePhone,
+	eMail,
+	eSex,
+	eSpace,
+	eNotice,
+	eAgree,
+]
+
+export const sampleList: elementLine[] =[
+	{
+		id: 1,
+		order: 2,
+		items: [
+			{
+				id: 1,
+				order: 2,
+				label: "이름",
+				placeholder: "김모아",
+				element: "Text",
+			},
+			{
+				id: 2,
+				order: 1,
+				label: "생년월일",
+				placeholder: "1982.08.02",
+				element: "Text",
+			}
+		]
+	},
+	{
+		id: 2,
+		order: 1,
+		items: [
+			{
+				id: 1,
+				order: 1,
+				label: "주소",
+				placeholder: "부산광역시 연제구 법원남로 9번길 17",
+				element: "Text",
+			}
+		]
+	},
+	{
+		id: 3,
+		order: 3,
+		items: [
+			{
+				id: 1,
+				order: 1,
+				label: "주소",
+				placeholder: "부산광역시 연제구 법원남로 9번길 17",
+				element: "Text",
+			}
+		]
+	},
+	{
+		id: 4,
+		order: 5,
+		items: [
+			{
+				id: 1,
+				order: 1,
+				label: "이메일",
+				placeholder: "moacube@gmail.com",
+				element: "Text",
+			}
+		]
+	},
+	{
+		id: 5,
+		order: 4,
+		items: [
+			{
+				id: 1,
+				order: 1,
+				label: "주소",
+				placeholder: "부산광역시 연제구 법원남로 9번길 17",
+				element: "Text",
+			}
+		]
+	}
+]
 
 export type moaElements = {
 	id: number,
@@ -107,52 +302,52 @@ export const testForm:moaLine[] = [
 				el: "TextField",
 				placeholder: "김모아",
 				isRemove: false,
-			},
-			{
-				id: 2,
-				label: "생년월일",
-				el: "TextField",
-				placeholder: "1982.08.02",
-				isRemove: false,
 			}
 		]
 	},
-	{
-		id: 2,
-		elGroup: [
-			{
-				id: 1,
-				label: "연락처",
-				el: "TextField",
-				placeholder: "010-1234-5678",
-				isRemove: false,
-			}
-		]
-	},
-	{
-		id: 3,
-		elGroup: [
-			{
-				id: 1,
-				label: "이메일",
-				el: "TextField",
-				placeholder: "moacube@gmail.com",
-				isRemove: false,
-			}
-		]
-	},
-	{
-		id: 4,
-		elGroup: [
-			{
-				id: 1,
-				label: "주소",
-				el: "TextField",
-				placeholder: "부산광역시 연제구 법원남로 9번길 17",
-				isRemove: false,
-			}
-		]
-	}
+	// {
+	// 	id: 2,
+	// 	elGroup: [
+	// 		{
+	// 			id: 1,
+	// 			label: "연락처",
+	// 			el: "TextField",
+	// 			placeholder: "010-1234-5678",
+	// 			isRemove: false,
+	// 		},
+	// 		{
+	// 			id: 2,
+	// 			label: "생년월일",
+	// 			el: "TextField",
+	// 			placeholder: "1982.08.02",
+	// 			isRemove: false,
+	// 		}
+	// 	]
+	// },
+	// {
+	// 	id: 3,
+	// 	elGroup: [
+	// 		{
+	// 			id: 1,
+	// 			label: "이메일",
+	// 			el: "TextField",
+	// 			placeholder: "moacube@gmail.com",
+	// 			isRemove: false,
+	// 		}
+	// 	]
+	// },
+	// {
+	// 	id: 4,
+	// 	elGroup: [
+	// 		{
+	// 			id: 1,
+	// 			label: "주소",
+	// 			el: "TextField",
+	// 			placeholder: "부산광역시 연제구 법원남로 9번길 17",
+	// 			isRemove: false,
+	// 		}
+	// 	]
+	// }
 ]
 
 

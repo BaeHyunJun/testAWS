@@ -22,6 +22,8 @@ import Sample3 from "@components/etc/sample3";
 import Loading from "@components/etc/Loading";
 import CategoryBox from "@components/Menu/categoryBox";
 import OpenRecent from "@components/List/openRecent";
+import axios from "axios";
+import useSWR from "swr";
 
 const categoryMenu = {
 	a: {
@@ -56,6 +58,11 @@ const Home: NextPage = () => {
 		email: '', password: '', authCode: ''
 	});
 	const { email, password, authCode } = formState;
+	
+	const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+	const { data, error } = useSWR("https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form", fetcher);
+
+	// console.log();
 	
 	useEffect(() => {
 		checkUser();
@@ -106,7 +113,7 @@ const Home: NextPage = () => {
 				</Container>
 			</Box>
 			
-			<OpenRecent />
+			<OpenRecent data={data?.body} />
 			
 			<Footer/>
 		</ThemeProvider>

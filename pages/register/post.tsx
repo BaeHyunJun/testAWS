@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -17,12 +17,22 @@ import {
 	TableBody,
 	TableRow,
 	TableCell,
-	Typography, CardActions, Chip,
+	Typography, CardActions, Chip, Divider,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
 import { authCurrentUser, authSignOut } from "@config/auth";
-import { elementList, interestElementList, moaElements, moaLine, testForm, YDR_THEME } from "@config/const";
+import {
+	elementItem,
+	elementLine,
+	elementList, elementsGroup,
+	interestElementList,
+	moaElements,
+	moaLine,
+	sampleList,
+	testForm,
+	YDR_THEME
+} from "@config/const";
 
 import Footer from "@components/Menu/footer";
 import Header from "@components/Menu/header";
@@ -45,6 +55,7 @@ import {
 	DroppableStateSnapshot
 } from "react-beautiful-dnd";
 import { ReactSortable } from "react-sortablejs";
+import DropItem from "@components/dnd/dropitem";
 
 const Post: NextPage = () => {
 	const router = useRouter();
@@ -88,20 +99,22 @@ const Post: NextPage = () => {
 	// }
 	
 	const [elements, setElements] = useState<moaElements[]>(elementList);
-	const [interestElements, setInterestElements] = useState<moaElements[]>(interestElementList);
-	const [test123, setTest123] = useState<moaLine[]>(testForm);
+	const [interestElements, setInterestElements] = useState<elementItem[]>(elementsGroup);
+	const [sample, setSample] = useState<elementLine[]>(sampleList);
 	
 	// useEffect(() => {
 	// 	console.log(test123);
 	// }, [test123])
 	
 	const removeElement = (data: any[], index: number) => {
-		let temp = JSON.parse(JSON.stringify(test123));
+		let temp = JSON.parse(JSON.stringify(sample));
 		
-		temp.filter((dat: moaLine, idx:number) => idx == index)[0].elGroup = data;
+		temp.filter((dat: elementLine, idx:number) => dat.id == index)[0].items = data;
 		
-		setTest123(temp);
+		setSample(temp);
 	}
+	
+	// console.log(sample)
 	
 	if (!uiState) {
 		return <></>
@@ -151,7 +164,7 @@ const Post: NextPage = () => {
 						left: 0,
 						right: 0,
 						bottom: 0,
-						overflowY: "auto",
+						// overflowY: "auto",
 					},
 					"& .MuiCard-root": {
 						position: "relative",
@@ -185,40 +198,36 @@ const Post: NextPage = () => {
 								ghostClass={"highlight"}
 								handle={".sortHandle"}
 								direction={"vertical"}
-								list={test123}
+								list={sample}
 								setList={(newState: any, sortable, store) => {
-									
-									const test:moaElements[] = newState.filter((data: moaLine, index: number) => {
+									const test:elementItem[] = newState.filter((data: elementLine, index: number) => {
 										let flag = true;
-										
-										if (data.elGroup) {
+
+										if (data.items) {
 											flag = false
 										}
-										
+
 										return flag
 									})
 									
-									// console.log(test);
-									// console.log(newState);
-
 									if (test.length > 0) {
-										const order = newState.findIndex((data: any) => data === test[0]);
-
-										const newItem:moaLine = {
-											id: test123.length + 1,
-											elGroup: test
-										}
-
-										const newList = test123.splice(order, 0, newItem);
+										const order = newState.findIndex((data: any) => data === test[0]) + 1;
 										
-										// setTest123(newList);
+										const newItem:elementLine = {
+											id: newState.length,
+											order: order,
+											items: test
+										}
+										
+										sample.splice(order - 1, 0, newItem);
 									} else {
-										setTest123(newState);
+										setSample(newState);
 									}
 								}}
 							>
-								{test123.map((elLine: moaLine, index: number) => (
-									<DropLine key={elLine.id} no={elLine.id} elGroup={elLine.elGroup} onRemove={removeElement} />
+								{sample.sort((a:any, b:any) => a.order - b.order).map((elLine: elementLine, index: number) => (
+									
+									<DropLine key={elLine.id} no={elLine.id} elLine={elLine} onRemove={removeElement} />
 								))}
 							</ReactSortable>
 						</Card>
@@ -263,7 +272,7 @@ const Post: NextPage = () => {
 									chosenClass={"chosen"}
 									list={interestElements}
 									className={"moduleList"}
-									setList={(newState: moaElements[]) => setInterestElements(newState)}
+									setList={(newState: elementItem[]) => setInterestElements(newState)}
 								>
 									{interestElements.map((element: any, index: number) => (
 										<li key={element.id}>
@@ -284,34 +293,25 @@ const Post: NextPage = () => {
 							>
 								<Typography variant={"subtitle1"}>추가할 목록</Typography>
 								
-								<ReactSortable
-									group={{
-										name: "shared",
-										pull: "clone",
-									}}
-									sort={false}
-									chosenClass={"chosen"}
-									list={elements}
-									className={"moduleList"}
-									setList={(newState: moaElements[]) => setElements(newState)}
-								>
-									{elements.map((element: any, index: number) => (
-										<li key={element.id}>
-											<Typography variant={"body1"}>
-												{element.label}
-											</Typography>
-										</li>
-									))}
-								</ReactSortable>
-								
-								{/*<ul className={"moduleList"}>*/}
-								{/*	<li>통장</li>*/}
-								{/*	<li>프로필 사진</li>*/}
-								{/*	<li>경력</li>*/}
-								{/*	<li>텍스트</li>*/}
-								{/*	<li>테두리 없음</li>*/}
-								{/*	<li>체크 박스</li>*/}
-								{/*</ul>*/}
+								{/*<ReactSortable*/}
+								{/*	group={{*/}
+								{/*		name: "shared",*/}
+								{/*		pull: "clone",*/}
+								{/*	}}*/}
+								{/*	sort={false}*/}
+								{/*	chosenClass={"chosen"}*/}
+								{/*	list={elements}*/}
+								{/*	className={"moduleList"}*/}
+								{/*	setList={(newState: moaElements[]) => setElements(newState)}*/}
+								{/*>*/}
+								{/*	{elements.map((element: any, index: number) => (*/}
+								{/*		<li key={element.id}>*/}
+								{/*			<Typography variant={"body1"}>*/}
+								{/*				{element.label}*/}
+								{/*			</Typography>*/}
+								{/*		</li>*/}
+								{/*	))}*/}
+								{/*</ReactSortable>*/}
 							</Box>
 							
 							<Chip label={"신청일"}/>

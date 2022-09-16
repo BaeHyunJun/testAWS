@@ -92,7 +92,7 @@ const Recent: NextPage<ItemProps> = ({ title, src, onModal }) => {
 			}
 			<CardActions>
 				{
-					src
+					title
 					?
 						<>
 							<Button>{ title }</Button>
