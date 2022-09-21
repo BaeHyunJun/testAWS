@@ -30,6 +30,7 @@ interface defaultString {
 
 export type elementItem = {
 	id: number;
+	type: string;
 	label: string;
 	element: string;
 	order?: number;
@@ -44,43 +45,49 @@ export type elementLine = {
 	items: elementItem[];
 }
 
-const eName: elementItem = {
+export const eName: elementItem = {
 	id: 1,
+	type: "Name",
 	label: "이름",
 	element: "Text",
 	placeholder: "김모아",
 };
 
-const eBirthDay: elementItem = {
+export const eBirthDay: elementItem = {
 	id: 2,
+	type: "BirthDay",
 	label: "생년월일",
 	element: "Text",
 	placeholder: "1982.08.02",
 };
 
-const eAddress: elementItem = {
+export const eAddress: elementItem = {
 	id: 3,
+	type: "Address",
 	label: "주소",
 	element: "Text",
 	placeholder: "부산광역시 연제구 법원남로 9번길 17",
 };
 
-const ePhone: elementItem = {
+export const ePhone: elementItem = {
 	id: 4,
+	type: "Phone",
 	label: "연락처",
 	element: "Text",
 	placeholder: "010-1234-5678",
 };
 
-const eMail: elementItem = {
+export const eMail: elementItem = {
 	id: 5,
+	type: "Email",
 	label: "이메일",
 	element: "Text",
 	placeholder: "moacube@gmail.com",
 };
 
-const eSex: elementItem = {
+export const eSex: elementItem = {
 	id: 6,
+	type: "Sex",
 	label: "성별",
 	element: "Sex",
 	value: "male",
@@ -100,26 +107,71 @@ const eSex: elementItem = {
 	]
 }
 
-const eSpace: elementItem = {
+export const eSpace: elementItem = {
 	id: 7,
+	type: "Space",
 	label: "여백",
 	element: "Space",
-	value: "12"
+	value: "30"
 }
 
-const eNotice: elementItem = {
+export const eNotice: elementItem = {
 	id: 8,
+	type: "Notice",
 	label: "안내글",
-	element: "Notice",
+	element: "Text",
 }
 
-const eAgree: elementItem = {
+export const eAgree: elementItem = {
 	id: 9,
+	type: "Agree",
 	label: "약관",
 	element: "Agree",
 }
 
-export const elementsGroup: elementItem[] =[
+export const eDate: elementItem = {
+	id: 10,
+	type: "Date",
+	label: "날짜",
+	element: "Date",
+}
+
+export const eAccount: elementItem = {
+	id: 11,
+	type: "Account",
+	label: "계좌이체",
+	element: "Account",
+}
+
+export const ePerson: elementItem = {
+	id: 12,
+	type: "Person",
+	label: "인적사항",
+	element: "Person",
+}
+
+export const eEducation: elementItem = {
+	id: 13,
+	type: "Education",
+	label: "학력사항",
+	element: "Education",
+}
+
+export const eCareer: elementItem = {
+	id: 14,
+	type: "Career",
+	label: "경력사항",
+	element: "Career",
+}
+
+export const eLicense: elementItem = {
+	id: 15,
+	type: "License",
+	label: "자격사항",
+	element: "License",
+}
+
+export const elementsGroup: elementItem[] = [
 	eName,
 	eBirthDay,
 	eAddress,
@@ -129,9 +181,15 @@ export const elementsGroup: elementItem[] =[
 	eSpace,
 	eNotice,
 	eAgree,
+	eDate,
+	eAccount,
+	ePerson,
+	eEducation,
+	eCareer,
+	eLicense,
 ]
 
-export const sampleList: elementLine[] =[
+export const sampleList: elementLine[] = [
 	{
 		id: 1,
 		order: 2,
@@ -139,6 +197,7 @@ export const sampleList: elementLine[] =[
 			{
 				id: 1,
 				order: 2,
+				type: "Name",
 				label: "이름",
 				placeholder: "김모아",
 				element: "Text",
@@ -146,6 +205,7 @@ export const sampleList: elementLine[] =[
 			{
 				id: 2,
 				order: 1,
+				type: "BirthDay",
 				label: "생년월일",
 				placeholder: "1982.08.02",
 				element: "Text",
@@ -159,6 +219,7 @@ export const sampleList: elementLine[] =[
 			{
 				id: 1,
 				order: 1,
+				type: "Address",
 				label: "주소",
 				placeholder: "부산광역시 연제구 법원남로 9번길 17",
 				element: "Text",
@@ -172,6 +233,7 @@ export const sampleList: elementLine[] =[
 			{
 				id: 1,
 				order: 1,
+				type: "Address",
 				label: "주소",
 				placeholder: "부산광역시 연제구 법원남로 9번길 17",
 				element: "Text",
@@ -185,6 +247,7 @@ export const sampleList: elementLine[] =[
 			{
 				id: 1,
 				order: 1,
+				type: "Email",
 				label: "이메일",
 				placeholder: "moacube@gmail.com",
 				element: "Text",
@@ -198,6 +261,7 @@ export const sampleList: elementLine[] =[
 			{
 				id: 1,
 				order: 1,
+				type: "Address",
 				label: "주소",
 				placeholder: "부산광역시 연제구 법원남로 9번길 17",
 				element: "Text",
@@ -355,6 +419,9 @@ export const YDR_THEME = createTheme({
 	palette: {
 		// maxWidth: {
 		//   default: "none",
+		// },
+		// display: {
+		// 	default: "flex" ,
 		// },
 		background: {
 			default: "#f0f2f5",

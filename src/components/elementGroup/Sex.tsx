@@ -7,14 +7,40 @@ import Selector from "@components/elements/Selector";
 type ItemProps = {
 	props: any,
 	
-	actionRemove:() => void;
+	actionRemove?:() => void;
 };
 
 const Sex: NextPage<ItemProps> = ( {props, actionRemove}) => {
 	const { label, value, children } = props;
 	
 	return (
-		<FormControl sx={{ borderBottom: "1px solid rgba(0, 0, 0, 0.42)" }}>
+		<FormControl
+			className={`elements eg-Sex`}
+			sx={{
+				borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+				"& .MuiFormGroup-root": {
+					height: "100%",
+					webkitAlignItems: "center",
+					webkitBoxAlign: "center",
+					msFlexAlign: "center",
+					alignItems: "center",
+				},
+				".gridLine & .MuiFormLabel-root": {
+					marginRight: "12px",
+				},
+				"& .MuiFormLabel-root": {
+					minWidth: "80px",
+					height: "32px",
+					marginRight: "6px",
+				},
+				".border & .MuiFormLabel-root": {
+					borderRight: "1px solid gray",
+				},
+				".border & .MuiFormLabel-root > p": {
+					mx: "auto"
+				}
+			}}
+		>
 			<RadioGroup row defaultValue={value}>
 				<FormLabel>
 					<Typography variant={"body1"}>

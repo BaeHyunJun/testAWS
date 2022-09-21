@@ -114,6 +114,22 @@ const Post: NextPage = () => {
 		setSample(temp);
 	}
 	
+	const onSaveForm = () => {
+		if (!title) {
+			alert("제목을 입력해주세요.");
+			return;
+		}
+		
+		const saveForm = sample.filter((dat: any, idx: number) => dat.items.length > 0);
+		
+		console.log("저장하기", sample);
+		console.log("저장하기", saveForm);
+	}
+	
+	const changeOrderData = () => {
+	
+	}
+	
 	// console.log(sample)
 	
 	if (!uiState) {
@@ -332,7 +348,7 @@ const Post: NextPage = () => {
 					<Button variant="outlined">
 						url 복사
 					</Button>
-					<Button variant="contained">
+					<Button variant="contained" onClick={onSaveForm}>
 						만들기
 					</Button>
 				</Box>

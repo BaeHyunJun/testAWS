@@ -10,19 +10,20 @@ type ItemProps = {
 	actionRemove?:() => void;
 };
 
-const Notice: NextPage<ItemProps> = ( {props, actionRemove}) => {
-	const { label, placeholder } = props;
+const Date: NextPage<ItemProps> = ( {props, actionRemove}) => {
+	const { label, placeholder, endText } = props;
 	
 	return (
 		<TextField
-			className={`elements e-Notice`}
+			className={`elements`}
 			variant="standard"
 			placeholder={ placeholder ? placeholder : "내용을 입력해주세요." }
 			InputProps={{
-				endAdornment: <CloseIcon className="removeBtn" onClick={actionRemove} />,
+				startAdornment: <InputAdornment position="start">{ label }</InputAdornment>,
+				endAdornment: endText ? endText : <CloseIcon className="removeBtn" onClick={actionRemove} />,
 			}}
 		/>
 	);
 };
 
-export default Notice;
+export default Date;

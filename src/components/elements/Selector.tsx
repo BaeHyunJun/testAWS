@@ -13,7 +13,12 @@ const Selector: NextPage<ItemProps> = ( {props, actionRemove}) => {
 	const { label, value } = props;
 	
 	return (
-		<FormControlLabel value={value} control={<Radio />} label={label} />
+		<FormControlLabel
+			className={`elements e-Selector`}
+			value={value}
+			control={<Radio />}
+			label={label}
+		/>
 	);
 };
 
