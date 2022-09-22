@@ -228,7 +228,7 @@ const Forms: NextPage = () => {
 			// 	alignItems: "center",
 			// }}
 		>
-			<CssBaseline/>
+			<CssBaseline />
 			
 			<Container
 				sx={{

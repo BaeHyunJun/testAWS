@@ -427,6 +427,19 @@ export const YDR_THEME = createTheme({
 			default: "#f0f2f5",
 		},
 	},
+	components: {
+		MuiCssBaseline: {
+			styleOverrides: {
+				body: {
+					// width: "100%",
+					// height: "100%",
+					// display: "flex",
+					// justifyContent: "center",
+					// alignItems: "center",
+				}
+			}
+		}
+	}
 	// components: {
 	//   MuiContainer: {
 	//     styleOverrides: {
