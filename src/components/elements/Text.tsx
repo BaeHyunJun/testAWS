@@ -27,14 +27,26 @@ const Text: NextPage<ItemProps> = ( {props, actionRemove}) => {
 					cursor: "pointer"
 				},
 				"& .MuiInputAdornment-root": {
-					pl: 2,
-					minWidth: "100px",
+					pl: {
+						xs: 1,
+						sm: 2,
+					},
+					minWidth: {
+						xs: "50px",
+						sm: "100px",
+					},
 				},
 				".el-left &": {
-					pr: 2,
+					pr: {
+						xs: 1,
+						sm: 2,
+					},
 				},
 				".el-right &": {
-					pl: 2,
+					pl: {
+						xs: 1,
+						sm: 2,
+					},
 				},
 				".gridLine .el-left &": {
 					pr: 0,

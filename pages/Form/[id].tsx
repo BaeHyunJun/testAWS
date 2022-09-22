@@ -255,7 +255,7 @@ const Forms: NextPage = () => {
 						<Grid container>
 							{dat.items.map((da:any, id:number) => {
 								return (
-									<Grid key={id} item xs={12 / length}>
+									<Grid key={id} item xs={12 / length} className={dat.items.length > 1 ? id ? "el-right" : "el-left" : ""}>
 										{ createElements(da) }
 									</Grid>
 								);
