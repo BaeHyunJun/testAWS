@@ -431,6 +431,7 @@ export const YDR_THEME = createTheme({
 		MuiCssBaseline: {
 			styleOverrides: {
 				body: {
+					minWidth: "auto",
 					// width: "100%",
 					// height: "100%",
 					// display: "flex",
