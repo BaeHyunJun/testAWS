@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Box, Card, CardHeader, Container, CssBaseline, Grid } from "@mui/material";
+import { Box, Button, Card, CardActions, CardHeader, Container, CssBaseline, Grid } from "@mui/material";
 import React, { Fragment } from "react";
 import { elementItem, YDR_THEME } from "@config/const";
 import Text from "@components/elements/Text";
@@ -244,6 +244,16 @@ const Forms: NextPage = () => {
 						border: "1px solid",
 						minHeight: "700px",
 						maxWidth: "600px",
+						"& .MuiCardActions-root": {
+							background: "#5471f3",
+							color: "white",
+						},
+						"& .MuiCardActions-root > .MuiButton-root": {
+							width: "100%",
+							color: "white",
+							fontWeight: "bold",
+							fontSize: "14px",
+						}
 					}}
 				>
 					<CardHeader title={title} />
@@ -264,6 +274,9 @@ const Forms: NextPage = () => {
 					</Box>
 				);
 			})}
+					<CardActions>
+						<Button size="small">등록하기</Button>
+					</CardActions>
 				</Card>
 			</Container>
 		</ThemeProvider>
