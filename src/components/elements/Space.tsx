@@ -47,7 +47,7 @@ const Space: NextPage<ItemProps> = ( {props, actionRemove}) => {
 		>
 			<Grid container>
 				<Grid item xs={12}>
-					{ actionRemove && <CloseIcon className="removeBtn" onClick={ actionRemove }/> }
+					{/*{ actionRemove && <CloseIcon className="removeBtn" onClick={ actionRemove }/> }*/}
 					<Typography variant={"body1"}>
 						{ label }
 					</Typography>

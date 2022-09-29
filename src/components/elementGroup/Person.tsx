@@ -65,7 +65,7 @@ const Person: NextPage<ItemProps> = ( {props, actionRemove}) => {
 					<Typography variant={"body1"}>
 						{ label }
 					</Typography>
-					{ actionRemove && <CloseIcon className="removeBtn" onClick={ actionRemove }/> }
+					{/*{ actionRemove && <CloseIcon className="removeBtn" onClick={ actionRemove }/> }*/}
 				</FormLabel>
 				{/*<Grid container>*/}
 				{/*	<Grid item xs={2}>*/}
@@ -84,7 +84,7 @@ const Person: NextPage<ItemProps> = ( {props, actionRemove}) => {
 								<Text props={eMail} />
 							</Grid>
 							<Grid item xs={6} className={`el-right`}>
-								<Text props={{label: "성별"}} />
+								<Text props={{label: "성별", isLabel: true}} />
 							</Grid>
 						</Grid>
 						<Grid container>

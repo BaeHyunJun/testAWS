@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NextPage } from "next";
 
 import { InputAdornment, TextField } from "@mui/material";
@@ -11,17 +11,35 @@ type ItemProps = {
 };
 
 const Text: NextPage<ItemProps> = ( {props, actionRemove}) => {
-	const { label, placeholder, isPlaceholder = true, endText, variant } = props;
+	const [element, setElement] = useState(props);
+	
+	const { isLabel, label, placeholder, isPlaceholder = true, endText, variant, className } = element;
+	
+	const onChange = (e?: any) => {
+		setElement({ ...element, "value": e.target.value});
+	}
 	
 	return (
 		<TextField
 			sx={{
-				// my: 1,
 				px: 4,
-				// py: 1,
 				width: "100%",
 				"& .MuiInputBase-root": {
 					minHeight: "50px",
+				},
+				"&.title .MuiInputBase-input": {
+					fontSize: "24px",
+					textAlign: "center",
+				},
+				"&.notice .MuiInputBase-root": {
+					height: "30px",
+					minHeight: "30px",
+				},
+				"&.notice .MuiInputBase-root:before": {
+					border: "none",
+				},
+				"&.notice .MuiInputBase-input": {
+					textAlign: "center",
 				},
 				"& .removeBtn": {
 					cursor: "pointer"
@@ -57,7 +75,7 @@ const Text: NextPage<ItemProps> = ( {props, actionRemove}) => {
 				},
 				".noPadding &": {
 					// my: 0,
-					mt: "-1px",
+					mt: 0, //"-1px",
 				},
 				".noPadding:first-of-type &": {
 					mt: 0,
@@ -66,19 +84,27 @@ const Text: NextPage<ItemProps> = ( {props, actionRemove}) => {
 					borderTop: "1px solid gray",
 					borderLeft: "1px solid gray",
 					borderRight: "1px solid gray",
+					height: "50px",
+				},
+				".border &.notice .MuiInputBase-root": {
+					height: "30px",
+					borderBottom: "1px solid gray"
 				},
 				".border & .MuiInputAdornment-root": {
 					borderRight: "1px solid gray",
 					height: "100%",
+					maxHeight: "none",
 				},
 			}}
-			className={`elements e-Text`}
+			className={`elements e-Text ${className ? className : ""}`}
 			variant={ variant ? variant : "standard" }
 			placeholder={ isPlaceholder ? placeholder ? placeholder : "내용을 입력해주세요." : "" }
 			InputProps={{
-				startAdornment: label && <InputAdornment position="start">{ label }</InputAdornment>,
-				endAdornment: endText ? endText : actionRemove ? <CloseIcon className="removeBtn" onClick={actionRemove} /> : null,
+				startAdornment: isLabel && label && <InputAdornment position="start">{ label }</InputAdornment>,
+				// endAdornment: endText ? endText : actionRemove ? <CloseIcon className="removeBtn" onClick={actionRemove} /> : null,
 			}}
+			onChange={onChange}
+			disabled
 		/>
 	);
 };

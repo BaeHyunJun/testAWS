@@ -15,14 +15,16 @@ import {
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Link from "next/link";
 type ItemProps = {
+	data?: any;
 	title?: string;
 	src?: string;
 	
 	onModal?: () => void;
 };
 
-const Recent: NextPage<ItemProps> = ({ title, src, onModal }) => {
+const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	
@@ -45,7 +47,7 @@ const Recent: NextPage<ItemProps> = ({ title, src, onModal }) => {
 			}}
 		>
 			{
-				src ?
+				data?.thumb ?
 					<Button
 						sx={{
 							p: 0,
@@ -73,7 +75,7 @@ const Recent: NextPage<ItemProps> = ({ title, src, onModal }) => {
 						<CardMedia
 							component="img"
 							height="140"
-							image={ src }
+							image={ data?.thumb }
 							alt="green iguana"
 						/>
 						<Box className={"textBox"}>
@@ -92,10 +94,14 @@ const Recent: NextPage<ItemProps> = ({ title, src, onModal }) => {
 			}
 			<CardActions>
 				{
-					title
+					data?.title
 					?
 						<>
-							<Button>{ title }</Button>
+							<Link href={`/register/post?id=${data?.id}`}>
+								<a target={`_blank`}>
+									{ data?.title }
+								</a>
+							</Link>
 							<Box sx={{ flexGrow: 1 }} />
 							<IconButton onClick={handleClick}>
 								<MoreVertIcon />

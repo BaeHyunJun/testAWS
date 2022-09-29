@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 import { Author, Id } from "@components/test/types";
+import { ActionType } from "typesafe-actions";
+import * as post from "@actions/post";
 
 export enum API {
 	// DOMAIN="http://1.234.5.16:8585/",
@@ -11,7 +13,7 @@ export enum API {
 	// LOGIN = "/user/login",
 	// LOGOUT = "/user/logout",
 	// CHECKLOGIN = "/user/islogin",
-	// FILTER = "/common/filter/",
+	// FILTER = "/post/filter/",
 	// SEARCH = "/auction/search/",
 	// PRODUCT = "/auction/",
 	// KAKAO_API_KEY = "38606d651a3071f9595b916641be1988",
@@ -28,15 +30,32 @@ interface defaultString {
 	link: string,
 }
 
+export type defaultOptions = {
+	isBold?: boolean,
+	isItalic?: boolean,
+	isUnderLine?: boolean,
+	isThrough?: boolean,
+	isGrid?: boolean,
+	fontSize?: number,
+	align?: string,
+	
+	border?: string,
+	unfold?: string,
+}
+
 export type elementItem = {
 	id: number;
 	type: string;
 	label: string;
 	element: string;
+	className?: string;
+	isLabel?: boolean;
 	order?: number;
 	placeholder?: string;
-	value?: string;
+	value?: any;
 	children?: any;
+	size?: string;
+	options: defaultOptions
 }
 
 export type elementLine = {
@@ -45,12 +64,68 @@ export type elementLine = {
 	items: elementItem[];
 }
 
+export const elText: elementItem = {
+	id: 0,
+	type: "Text",
+	label: "텍스트",
+	element: "TextBox",
+	placeholder: "내용을 입력해주세요.",
+	isLabel: false,
+	options: {
+		isBold: false,
+		isItalic: false,
+		isUnderLine: false,
+		isThrough: false,
+		isGrid: true,
+		fontSize: 14,
+		align: "Left",
+		
+		border: "All",
+		unfold: "More",
+	}
+};
+
+export const elInput: elementItem = {
+	id: 1,
+	type: "Input",
+	label: "입력박스",
+	element: "InputBox",
+	placeholder: "내용을 입력해주세요.",
+	isLabel: true,
+	options: {
+		isBold: false,
+		isItalic: false,
+		isUnderLine: false,
+		isThrough: false,
+		isGrid: true,
+		fontSize: 14,
+		align: "Left",
+		
+		border: "All",
+		unfold: "More",
+	}
+};
+
+export const eTitle: elementItem = {
+	id: 0,
+	type: "Title",
+	label: "제목",
+	element: "TextBox",
+	placeholder: "제목을 입력해주세요.",
+	isLabel: false,
+	className: "title",
+	size: "full",
+	options: {},
+};
+
 export const eName: elementItem = {
 	id: 1,
 	type: "Name",
 	label: "이름",
 	element: "Text",
 	placeholder: "김모아",
+	isLabel: true,
+	options: {},
 };
 
 export const eBirthDay: elementItem = {
@@ -59,6 +134,8 @@ export const eBirthDay: elementItem = {
 	label: "생년월일",
 	element: "Text",
 	placeholder: "1982.08.02",
+	isLabel: true,
+	options: {},
 };
 
 export const eAddress: elementItem = {
@@ -67,6 +144,9 @@ export const eAddress: elementItem = {
 	label: "주소",
 	element: "Text",
 	placeholder: "부산광역시 연제구 법원남로 9번길 17",
+	size: "full",
+	isLabel: true,
+	options: {},
 };
 
 export const ePhone: elementItem = {
@@ -75,6 +155,8 @@ export const ePhone: elementItem = {
 	label: "연락처",
 	element: "Text",
 	placeholder: "010-1234-5678",
+	isLabel: true,
+	options: {},
 };
 
 export const eMail: elementItem = {
@@ -83,6 +165,8 @@ export const eMail: elementItem = {
 	label: "이메일",
 	element: "Text",
 	placeholder: "moacube@gmail.com",
+	isLabel: true,
+	options: {},
 };
 
 export const eSex: elementItem = {
@@ -91,6 +175,8 @@ export const eSex: elementItem = {
 	label: "성별",
 	element: "Sex",
 	value: "male",
+	isLabel: true,
+	options: {},
 	children: [
 		{
 			id: 1,
@@ -112,7 +198,20 @@ export const eSpace: elementItem = {
 	type: "Space",
 	label: "여백",
 	element: "Space",
-	value: "30"
+	value: "30",
+	size: "full",
+	options: {
+		isBold: false,
+		isItalic: false,
+		isUnderLine: false,
+		isThrough: false,
+		isGrid: true,
+		fontSize: 14,
+		align: "Left",
+		
+		border: "All",
+		unfold: "More",
+	}
 }
 
 export const eNotice: elementItem = {
@@ -120,6 +219,11 @@ export const eNotice: elementItem = {
 	type: "Notice",
 	label: "안내글",
 	element: "Text",
+	isLabel: false,
+	className: "notice",
+	size: "full",
+	options: {},
+	// placeholder: ""
 }
 
 export const eAgree: elementItem = {
@@ -127,13 +231,24 @@ export const eAgree: elementItem = {
 	type: "Agree",
 	label: "약관",
 	element: "Agree",
+	size: "full",
+	options: {},
 }
 
 export const eDate: elementItem = {
 	id: 10,
 	type: "Date",
 	label: "날짜",
-	element: "Date",
+	element: "Text",
+	options: {},
+}
+
+export const eTime: elementItem = {
+	id: 16,
+	type: "Date",
+	label: "시간",
+	element: "Text",
+	options: {},
 }
 
 export const eAccount: elementItem = {
@@ -141,6 +256,8 @@ export const eAccount: elementItem = {
 	type: "Account",
 	label: "계좌이체",
 	element: "Account",
+	size: "full",
+	options: {},
 }
 
 export const ePerson: elementItem = {
@@ -148,6 +265,8 @@ export const ePerson: elementItem = {
 	type: "Person",
 	label: "인적사항",
 	element: "Person",
+	size: "full",
+	options: {},
 }
 
 export const eEducation: elementItem = {
@@ -155,6 +274,8 @@ export const eEducation: elementItem = {
 	type: "Education",
 	label: "학력사항",
 	element: "Education",
+	size: "full",
+	options: {},
 }
 
 export const eCareer: elementItem = {
@@ -162,6 +283,8 @@ export const eCareer: elementItem = {
 	type: "Career",
 	label: "경력사항",
 	element: "Career",
+	size: "full",
+	options: {},
 }
 
 export const eLicense: elementItem = {
@@ -169,60 +292,108 @@ export const eLicense: elementItem = {
 	type: "License",
 	label: "자격사항",
 	element: "License",
+	size: "full",
+	options: {},
 }
 
 export const elementsGroup: elementItem[] = [
-	eName,
-	eBirthDay,
-	eAddress,
-	ePhone,
-	eMail,
-	eSex,
+	elText,
+	elInput,
+	// eTitle,
+	// eName,
+	// eBirthDay,
+	// eAddress,
+	// ePhone,
+	// eMail,
+	// eSex,
 	eSpace,
-	eNotice,
+	// eNotice,
 	eAgree,
-	eDate,
-	eAccount,
-	ePerson,
-	eEducation,
-	eCareer,
-	eLicense,
+	// eDate,
+	// eTime,
+	// eAccount,
+	// ePerson,
+	// eEducation,
+	// eCareer,
+	// eLicense,
 ]
+
+export type postAction = ActionType<typeof post>;
 
 export const sampleList: elementLine[] = [
 	{
 		id: 1,
-		order: 2,
-		items: [
-			{
-				id: 1,
-				order: 2,
-				type: "Name",
-				label: "이름",
-				placeholder: "김모아",
-				element: "Text",
-			},
-			{
-				id: 2,
-				order: 1,
-				type: "BirthDay",
-				label: "생년월일",
-				placeholder: "1982.08.02",
-				element: "Text",
-			}
-		]
-	},
-	{
-		id: 2,
 		order: 1,
 		items: [
 			{
 				id: 1,
 				order: 1,
-				type: "Address",
-				label: "주소",
-				placeholder: "부산광역시 연제구 법원남로 9번길 17",
-				element: "Text",
+				type: "Text",
+				label: "텍스트",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "TextBox",
+				value: "찾아가는 청년 마음건강상담 신청서",
+				options: {
+					isBold: true,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 20,
+					align: "Center",
+					
+					border: "Clear",
+					unfold: "More",
+				}
+			// },
+			// {
+			// 	id: 2,
+			// 	order: 2,
+			// 	type: "Text",
+			// 	label: "텍스트",
+			// 	isLabel: false,
+			// 	placeholder: "내용을 입력해주세요.",
+			// 	element: "TextBox",
+			// 	value: "찾아가는 청년",
+			// 	options: {
+			// 		isBold: false,
+			// 		isItalic: true,
+			// 		isUnderLine: true,
+			// 		isThrough: false,
+			// 		fontSize: 16,
+			// 		align: "Right",
+			//
+			// 		border: "All",
+			// 		unfold: "More",
+			// 	}
+			}
+		]
+	},
+	{
+		id: 2,
+		order: 2,
+		items: [
+			{
+				id: 2,
+				order: 1,
+				type: "Text",
+				label: "텍스트",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "TextBox",
+				value: "신청자 인적사항",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 16,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
 			}
 		]
 	},
@@ -231,43 +402,457 @@ export const sampleList: elementLine[] = [
 		order: 3,
 		items: [
 			{
-				id: 1,
+				id: 3,
 				order: 1,
-				type: "Address",
-				label: "주소",
-				placeholder: "부산광역시 연제구 법원남로 9번길 17",
-				element: "Text",
+				type: "Input",
+				label: "이름",
+				isLabel: true,
+				placeholder: "이름을 입력해주세요.",
+				element: "InputBox",
+				// value: "이름",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			},
+			{
+				id: 4,
+				order: 2,
+				type: "Input",
+				label: "생년월일",
+				isLabel: true,
+				placeholder: "생년월일을 입력해주세요.",
+				element: "InputBox",
+				// value: "생년월일",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
 			}
 		]
 	},
 	{
 		id: 4,
-		order: 5,
+		order: 4,
 		items: [
 			{
-				id: 1,
+				id: 5,
 				order: 1,
-				type: "Email",
-				label: "이메일",
-				placeholder: "moacube@gmail.com",
-				element: "Text",
+				type: "Input",
+				label: "전화번호",
+				isLabel: true,
+				placeholder: "전화번호를 입력해주세요.",
+				element: "InputBox",
+				// value: "전화번호",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			},
+			{
+				id: 6,
+				order: 2,
+				type: "Input",
+				label: "성별",
+				isLabel: true,
+				placeholder: "성별을 입력해주세요.",
+				element: "InputBox",
+				// value: "성별",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
 			}
 		]
 	},
 	{
 		id: 5,
-		order: 4,
+		order: 5,
 		items: [
 			{
-				id: 1,
+				id: 7,
 				order: 1,
-				type: "Address",
+				type: "Input",
 				label: "주소",
-				placeholder: "부산광역시 연제구 법원남로 9번길 17",
-				element: "Text",
+				isLabel: true,
+				placeholder: "주소를 입력해주세요.",
+				element: "InputBox",
+				// value: "전화번호",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
 			}
 		]
-	}
+	},
+	{
+		id: 6,
+		order: 6,
+		items: [
+			{
+				id: 8,
+				order: 1,
+				type: "Text",
+				label: "텍스트",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "TextBox",
+				value: "마음건강상담 대상 : 만 18세 ~ 만 34세 청년",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "Less",
+				}
+			}
+		]
+	},
+	{
+		id: 7,
+		order: 7,
+		items: [
+			{
+				id: 9,
+				order: 1,
+				type: "Space",
+				label: "여백",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "Space",
+				value: 30,
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "Less",
+				}
+			}
+		]
+	},
+	{
+		id: 8,
+		order: 12,
+		items: [
+			{
+				id: 10,
+				order: 1,
+				type: "Agree",
+				label: "약관",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "Agree",
+				// value: 30,
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "Less",
+				}
+			}
+		]
+	},
+	{
+		id: 9,
+		order: 8,
+		items: [
+			{
+				id: 11,
+				order: 1,
+				type: "Text",
+				label: "텍스트",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "TextBox",
+				value: "상담 신청사항",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 16,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			}
+		]
+	},
+	{
+		id: 10,
+		order: 9,
+		items: [
+			{
+				id: 12,
+				order: 2,
+				type: "Input",
+				label: "요청 시간",
+				isLabel: true,
+				placeholder: "시간을 입력해주세요.",
+				element: "InputBox",
+				// value: "이름",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			},
+			{
+				id: 13,
+				order: 1,
+				type: "Input",
+				label: "요청 날짜",
+				isLabel: true,
+				placeholder: "날짜를 입력해주세요.",
+				element: "InputBox",
+				// value: "생년월일",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			}
+		]
+	},
+	{
+		id: 11,
+		order: 10,
+		items: [
+			{
+				id: 14,
+				order: 1,
+				type: "Text",
+				label: "텍스트",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "TextBox",
+				value: "연제청년창업지원센터 인포메이션에서 상담 일정 확인 필수 (선착순 마감)",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "Less",
+				}
+			}
+		]
+	},
+	{
+		id: 12,
+		order: 11,
+		items: [
+			{
+				id: 15,
+				order: 1,
+				type: "Space",
+				label: "여백",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "Space",
+				value: 30,
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "Less",
+				}
+			}
+		]
+	},
+	{
+		id: 13,
+		order: 14,
+		items: [
+			{
+				id: 16,
+				order: 1,
+				type: "Input",
+				label: "신청 날짜",
+				isLabel: true,
+				placeholder: "날짜를 입력해주세요.",
+				element: "InputBox",
+				// value: "전화번호",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			}
+		]
+	},
+	{
+		id: 14,
+		order: 15,
+		items: [
+			{
+				id: 17,
+				order: 1,
+				type: "Input",
+				label: "신청인",
+				isLabel: true,
+				placeholder: "이름을 입력해주세요.",
+				element: "InputBox",
+				// value: "전화번호",
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "More",
+				}
+			}
+		]
+	},
+	{
+		id: 15,
+		order: 13,
+		items: [
+			{
+				id: 18,
+				order: 1,
+				type: "Space",
+				label: "여백",
+				isLabel: false,
+				placeholder: "내용을 입력해주세요.",
+				element: "Space",
+				value: 110,
+				options: {
+					isBold: false,
+					isItalic: false,
+					isUnderLine: false,
+					isThrough: false,
+					isGrid: true,
+					fontSize: 14,
+					align: "Center",
+					border: "All",
+					unfold: "Less",
+				}
+			}
+		]
+	},
+	// {
+	// 	id: 3,
+	// 	order: 3,
+	// 	items: [
+	// 		{
+	// 			id: 1,
+	// 			order: 1,
+	// 			type: "Address",
+	// 			label: "주소",
+	// 			placeholder: "부산광역시 연제구 법원남로 9번길 17",
+	// 			element: "Text",
+	// 		}
+	// 	]
+	// },
+	// {
+	// 	id: 4,
+	// 	order: 5,
+	// 	items: [
+	// 		{
+	// 			id: 1,
+	// 			order: 1,
+	// 			type: "Email",
+	// 			label: "이메일",
+	// 			placeholder: "moacube@gmail.com",
+	// 			element: "Text",
+	// 		}
+	// 	]
+	// },
+	// {
+	// 	id: 5,
+	// 	order: 4,
+	// 	items: [
+	// 		{
+	// 			id: 1,
+	// 			order: 1,
+	// 			type: "Address",
+	// 			label: "주소",
+	// 			placeholder: "부산광역시 연제구 법원남로 9번길 17",
+	// 			element: "Text",
+	// 		}
+	// 	]
+	// }
 ]
 
 export type moaElements = {

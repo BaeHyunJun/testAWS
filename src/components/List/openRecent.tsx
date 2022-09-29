@@ -80,7 +80,7 @@ const OpenRecent: NextPage<ItemProps> = ({ data }) => {
 				<Recent onModal={handleSelecType} />
 				{
 					data?.map((dat:any, idx: number) =>
-						<Recent key={idx} title={dat.title} src={dat.thumb} onModal={handlePreview} />
+						<Recent key={idx} data={dat} title={dat.title} src={dat.thumb} onModal={handlePreview} />
 					)
 				}
 			</Container>
