@@ -171,22 +171,22 @@ const Forms: NextPage = () => {
 	) : <></>;
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ res, req, params }) => {
-	if (!params) return { props: {} };
-	
-	const { id } = params;
-	
-	try {
-		store.dispatch(getPostAction.request(id));
-		store.dispatch(END);
-		await (store as SagaStore).sagaTask?.toPromise();
-	} catch (e) {
-		// console.log(e);
-	}
-	
-	return {
-		props: {},
-	};
-});
+// export const getServerSideProps = wrapper.getServerSideProps(store => async ({ res, req, params }) => {
+// 	if (!params) return { props: {} };
+//
+// 	const { id } = params;
+//
+// 	try {
+// 		store.dispatch(getPostAction.request(id));
+// 		store.dispatch(END);
+// 		await (store as SagaStore).sagaTask?.toPromise();
+// 	} catch (e) {
+// 		// console.log(e);
+// 	}
+//
+// 	return {
+// 		props: {},
+// 	};
+// });
 
 export default Forms;
