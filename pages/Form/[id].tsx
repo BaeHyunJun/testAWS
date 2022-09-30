@@ -145,23 +145,23 @@ const Forms: NextPage = () => {
 					}}
 				>
 					<CardHeader title={title} />
-			{form.sort((a:any, b:any)=>a.order-b.order).map((dat:any, idx:number) => {
-				const length = dat.items.length;
-				
-				return (
-					<Box key={idx}>
-						<Grid container>
-							{dat.items.map((da:any, id:number) => {
-								return (
-									<Grid key={id} item xs={12 / length} className={`${setClassName(da)} ${dat.items.length > 1 ? id ? "el-right" : "el-left" : ""}`}>
-										{ createElements(da) }
+						{form.sort((a:any, b:any)=>a.order-b.order).map((dat:any, idx:number) => {
+							const length = dat.items.length;
+							
+							return (
+								<Box key={idx}>
+									<Grid container>
+										{dat.items.map((da:any, id:number) => {
+											return (
+												<Grid key={id} item xs={12 / length} className={`${setClassName(da)} ${dat.items.length > 1 ? id ? "el-right" : "el-left" : ""}`}>
+													{ createElements(da) }
+												</Grid>
+											);
+										})}
 									</Grid>
-								);
-							})}
-						</Grid>
-					</Box>
-				);
-			})}
+								</Box>
+							);
+						})}
 					<CardActions>
 						<Button size="small">등록하기</Button>
 					</CardActions>

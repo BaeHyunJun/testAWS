@@ -8,15 +8,25 @@ import {
 	GET_POST,
 	GET_POST_SUCCESS,
 	GET_POST_ERROR,
-	PRIVATE_POST, PRIVATE_POST_SUCCESS, PRIVATE_POST_ERROR
+	PRIVATE_POST, PRIVATE_POST_SUCCESS, PRIVATE_POST_ERROR, GET_FORM_USER, GET_FORM_USER_SUCCESS
 } from "@actions/post";
 import { sampleList, postAction, elementLine } from "@config/const";
 
 const initData = {
-	line: sampleList
+	line: [], //sampleList
 }
 
 const post = createReducer<any, postAction>(initData, {
+	[GET_FORM_USER]:(state, action) => ({
+		...state,
+	}),
+	[GET_FORM_USER_SUCCESS]:(state, action) => ({
+		...state,
+		user: action.payload,
+	}),
+	[GET_FORM_USER]:(state, action) => ({
+		...state,
+	}),
 	[PRIVATE_POST]: (state, action) => ({
 		...state,
 		// line: action.payload

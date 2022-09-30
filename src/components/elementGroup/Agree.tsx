@@ -39,7 +39,7 @@ const radioBox = [
 ]
 
 const Person: NextPage<ItemProps> = ( {props, actionRemove}) => {
-	const { label, placeholder, endText } = props;
+	const { label, placeholder, endText, value } = props;
 	
 	return (
 		<FormControl
@@ -119,7 +119,7 @@ const Person: NextPage<ItemProps> = ( {props, actionRemove}) => {
 						</ul>
 					</Grid>
 					<Grid item xs={12}>
-						<RadioGroup row className={`agreeCheck`}>
+						<RadioGroup row className={`agreeCheck`} value={value}>
 						{radioBox.map((dat:any, idx:number) =>
 							<Selector key={idx} props={ dat } />
 						)}

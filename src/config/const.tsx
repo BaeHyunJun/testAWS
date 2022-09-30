@@ -20,6 +20,13 @@ export enum API {
 	// // KAKAO_API_KEY="df5c0cdd518cfe4c738ea669381c19ef",
 }
 
+export type defaultParams = {
+	[type: string]: any;
+	id?: any;
+	post?: any;
+	user?: any;
+};
+
 interface defaultObject {
 	[index: string]: any,
 }

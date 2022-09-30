@@ -26,6 +26,12 @@ const TextBox: NextPage<ItemProps> = ({props}) => {
 		// onClick(element.id);
 	}
 	
+	const outputText = () => {
+		let returnText = element?.value ? element?.value : element?.placeholder
+		
+		return returnText?.replaceAll('\n', '<br />');
+	}
+	
 	return (
 		<Box
 			sx={{
@@ -121,7 +127,7 @@ const TextBox: NextPage<ItemProps> = ({props}) => {
 			className={`${element?.className}`}
 		>
 			<Typography component={`div`}>
-				{ element?.value ? element?.value : element?.placeholder }
+				<div dangerouslySetInnerHTML={ { __html: outputText() } } />
 			</Typography>
 		</Box>
 	);

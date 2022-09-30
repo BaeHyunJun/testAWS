@@ -16,24 +16,51 @@ import { ThemeProvider } from "@mui/material/styles";
 import { SagaStore, wrapper } from "@store/index";
 import { END } from "redux-saga";
 import { getPostAction } from "@actions/post";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/reducers";
 import TextBox from "@components/elements/TextBox";
 import InputBox from "@components/elements/InputBox";
 import Agree from "@components/elementGroup/Agree";
+import { useRouter } from "next/router";
 
 const Forms: NextPage = () => {
+	const router = useRouter();
+	const dispatch = useDispatch();
+	
 	const post = useSelector((state: RootState) => state.post, shallowEqual);
 	
 	const [title, setTitle] = useState<string>("");
 	const [form, setForm] = useState<any>([]);
 	
 	useEffect(() => {
+		const id = router.query.id;
+		
+		if (id != undefined) dispatch(getPostAction.request(id));
+	}, [router, dispatch]);
+	
+	useEffect(() => {
 		setForm(post.line);
 		setTitle(post.title);
-	}, [post])
+	}, [post]);
 	
-	console.log(post);
+	useEffect(() => {
+		// console.log(form);
+		let inputGroup:any[] = [];
+		
+		form.map((dat:any, idx:number) => {
+			dat.items.map((da:any, id:number) => {
+				if (da.type == "Input") {
+					inputGroup.push(da);
+				}
+			})
+		});
+		
+		console.log(inputGroup);
+		console.log(JSON.stringify(inputGroup));
+		
+	}, [form])
+	
+	// console.log(post);
 	
 	const createElements = (props: elementItem) => {
 		const { element } = props;
