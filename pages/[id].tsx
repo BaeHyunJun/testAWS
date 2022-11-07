@@ -377,7 +377,7 @@ const Event: NextPage = () => {
 					<Typography variant={"subtitle2"}>
 						이벤트 참가자
 					</Typography>
-					{user.map((data:any, idx:number) => {
+					{user?.map((data:any, idx:number) => {
 						console.log(data);
 						return (
 							<>
