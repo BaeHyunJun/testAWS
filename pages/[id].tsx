@@ -7,9 +7,9 @@ import {
 	CardActions,
 	CardHeader, Checkbox,
 	Container,
-	CssBaseline, FormControlLabel,
+	CssBaseline, Divider, FormControlLabel,
 	FormGroup,
-	Grid, Table, TableBody, TableCell, TableRow, TextField,
+	Grid, List, ListItem, ListItemText, Table, TableBody, TableCell, TableRow, TextField,
 	Typography
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
@@ -26,7 +26,7 @@ import License from "@components/elementGroup/License";
 import { ThemeProvider } from "@mui/material/styles";
 import { SagaStore, wrapper } from "@store/index";
 import { END } from "redux-saga";
-import { addFormUserAction, getPostAction } from "@actions/post";
+import { addFormUserAction, getFormUserAction, getPostAction } from "@actions/post";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/reducers";
 import TextBox from "@components/elements/TextBox";
@@ -47,7 +47,14 @@ const Event: NextPage = () => {
 		
 		if (id != undefined) {
 			setPostID(parseInt(id.toString()));
-			dispatch (getPostAction.request (id));
+			dispatch(getPostAction.request (id));
+			
+			const info = {
+				user: 1,
+				post: id,
+			}
+			
+			dispatch(getFormUserAction.request(info));
 		}
 	}, [router, dispatch]);
 	
@@ -68,11 +75,14 @@ const Event: NextPage = () => {
 	
 	const { name, birth, tel, email, address, content } = eventState;
 	
+	const [user, setUser] = useState<any>([])
+	
 	useEffect(() => {
 		if (post) {
 			setTitle(post.title);
 			setImg(post.thumbnail);
 			post.line.length != 0 && setEventState(post.line);
+			setUser(post.user);
 		} else {
 			setEventState(initState);
 		}
@@ -173,6 +183,7 @@ const Event: NextPage = () => {
 			
 			<Container
 				sx={{
+					mt: 5,
 					width: 900,
 				}}
 			>
@@ -355,6 +366,69 @@ const Event: NextPage = () => {
 					<Button variant="contained" onClick={onSubmitEvent}>
 						이벤트 신청하기
 					</Button>
+				</Box>
+				
+				<Box
+					sx={{
+						mb: 3,
+						"& .MuiTypography-subtitle2": { mt: 2, p: 2, fontSize: "1.2rem", borderBottom: "1px solid #999", borderTop: "2px solid #436ff7", width: "100%", backgroundColor: "white", textAlign: "center" },
+					}}
+				>
+					<Typography variant={"subtitle2"}>
+						이벤트 참가자
+					</Typography>
+					{user.map((data:any, idx:number) => {
+						console.log(data);
+						return (
+							<>
+							<List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+								<ListItem alignItems="flex-start" sx={{ borderBottom: "1px solid #999" }}>
+									<ListItemText
+										primary={
+											<Box
+												sx={{
+													display: "flex",
+													justifyContent: "space-between",
+												}}
+											>
+												<Typography
+													sx={{ display: 'inline' }}
+													component="span"
+													variant="body1"
+													color="text.primary"
+												>
+													{data.content.name.substr(0, 1)} * {data.content.name.substr(data.content.name.length - 1, 1)}
+												</Typography>
+												<Typography
+													sx={{ display: 'inline' }}
+													component="span"
+													variant="body2"
+												>
+													{ data.regDate.substr(0, 4) }년 { data.regDate.substr(4, 2) }월 { data.regDate.substr(6, 2) }일
+												</Typography>
+											</Box>
+										}
+										// secondary={
+										// 	<React.Fragment>
+										// 		<Typography
+										// 			sx={{ display: 'inline' }}
+										// 			component="span"
+										// 			variant="body2"
+										// 			color="text.primary"
+										// 		>
+										// 			Ali Connors
+										// 		</Typography>
+										// 		{" — I'll be in your neighborhood doing errands this…"}
+										// 	</React.Fragment>
+										// }
+									/>
+								</ListItem>
+								{/*<Divider variant="inset" component="li" />*/}
+							</List>
+							
+							</>
+						)
+					})}
 				</Box>
 			</Container>
 		</ThemeProvider>
