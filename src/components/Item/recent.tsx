@@ -126,7 +126,11 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 								</MenuItem>
 								<Divider />
 								<MenuItem onClick={handleClose}>
-									url 공유
+									<Link href={`/${data?.id}`}>
+										<a target={`_blank`}>
+											url 공유
+										</a>
+									</Link>
 								</MenuItem>
 								<Divider />
 								<MenuItem onClick={handleClose}>

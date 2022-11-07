@@ -129,8 +129,6 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 		dispatch(getFormUserAction.request(info));
 	}
 	
-	console.log(inputGroup);
-	
 	const [isDrawer, setIsDrawer] = useState(false);
 	const [isModal, setIsModal] = useState(false);
 	
