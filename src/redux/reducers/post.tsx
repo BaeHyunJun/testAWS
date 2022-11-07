@@ -8,7 +8,13 @@ import {
 	GET_POST,
 	GET_POST_SUCCESS,
 	GET_POST_ERROR,
-	PRIVATE_POST, PRIVATE_POST_SUCCESS, PRIVATE_POST_ERROR, GET_FORM_USER, GET_FORM_USER_SUCCESS
+	PRIVATE_POST,
+	PRIVATE_POST_SUCCESS,
+	PRIVATE_POST_ERROR,
+	GET_FORM_USER,
+	GET_FORM_USER_SUCCESS,
+	ADD_FORM_USER,
+	ADD_FORM_USER_SUCCESS, ADD_FORM_USER_ERROR, GET_FORM_USER_ERROR
 } from "@actions/post";
 import { sampleList, postAction, elementLine } from "@config/const";
 
@@ -17,6 +23,17 @@ const initData = {
 }
 
 const post = createReducer<any, postAction>(initData, {
+	[ADD_FORM_USER]:(state, action) => ({
+		...state,
+	}),
+	[ADD_FORM_USER_SUCCESS]:(state, action) => ({
+		...state,
+		result: action.payload,
+		// user: action.payload,
+	}),
+	[ADD_FORM_USER_ERROR]:(state, action) => ({
+		...state,
+	}),
 	[GET_FORM_USER]:(state, action) => ({
 		...state,
 	}),
@@ -24,7 +41,7 @@ const post = createReducer<any, postAction>(initData, {
 		...state,
 		user: action.payload,
 	}),
-	[GET_FORM_USER]:(state, action) => ({
+	[GET_FORM_USER_ERROR]:(state, action) => ({
 		...state,
 	}),
 	[PRIVATE_POST]: (state, action) => ({
@@ -49,6 +66,7 @@ const post = createReducer<any, postAction>(initData, {
 		title: action.payload.title,
 		type: action.payload.type,
 		line: action.payload.content,
+		thumbnail: action.payload.thumbnail,
 	}),
 	[GET_POST_ERROR]: (state, action) => ({
 		...state,

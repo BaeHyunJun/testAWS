@@ -6,6 +6,19 @@ export const AxiosInstance = axios.create({
 	withCredentials: true,
 });
 
+export async function addMoaFormUser(userData: any) {
+	try {
+		const url = "https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form/uuserlist";
+		
+		const { data } = await axios.post(url, userData);
+
+		return data;
+	} catch (e) {
+		const error = e as AxiosError;
+		// return error;
+	}
+}
+
 export async function getMoaFormUser(params: defaultParams) {
 	try {
 		let url = "https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form/uuserlist";
@@ -33,7 +46,7 @@ export async function updatePost(postData: any) {
 	try {
 		// const config = { headers: { "Content-Type": "multipart/form-data" } };
 		//
-		// const { data } = await AxiosInstance.post("", formData, config);
+		// const { data } = await AxiosInstance.recruit("", formData, config);
 		const url = "https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form";
 		
 		
@@ -53,7 +66,7 @@ export async function getPost(id?: number) {
 	try {
 		// const config = { headers: { "Content-Type": "multipart/form-data" } };
 		//
-		// const { data } = await AxiosInstance.post("", formData, config);
+		// const { data } = await AxiosInstance.recruit("", formData, config);
 		const url = "https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form?id=" + id;
 		
 		const { data } = await axios.get(url);

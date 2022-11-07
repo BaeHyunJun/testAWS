@@ -44,7 +44,7 @@ const List: NextPage = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	
-	// const post = useSelector((state: RootState) => state.post, shallowEqual);
+	// const recruit = useSelector((state: RootState) => state.recruit, shallowEqual);
 	
 	const [isLoginState, setIsLoginState] = useState(false);
 	const [uiState, setUiState] = useState<string>('');
@@ -56,9 +56,12 @@ const List: NextPage = () => {
 	
 	const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 	const { data, error } = useSWR("https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form", fetcher);
+	// const { data, error } = useSWR("https://3hyotidvuj.execute-api.ap-northeast-2.amazonaws.com/moacube/v1/form?type=recruit", fetcher);
 	
 	// const [title, setTitle] = useState<string>("");
 	const [form, setForm] = useState<any>([]);
+	
+	// console.log(data);
 	
 	useEffect(() => {
 		setForm(data?.body);
@@ -71,9 +74,9 @@ const List: NextPage = () => {
 	// }, [router, dispatch]);
 	//
 	// useEffect(() => {
-	// 	setForm(post.line);
-	// 	setTitle(post.title);
-	// }, [post]);
+	// 	setForm(recruit.line);
+	// 	setTitle(recruit.title);
+	// }, [recruit]);
 	//
 	// useEffect(() => {
 	// 	// console.log(form);

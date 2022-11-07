@@ -41,14 +41,6 @@ const OpenRecent: NextPage<ItemProps> = ({ data }) => {
 	const handleSelecType = () => setOpenSelector(true);
 	const handleCloseSelecType = () => setOpenSelector(false);
 	
-	const a:any = {
-		// a: { label: "+ 새로 만들기", onSeletor: handleSelecType },
-		b: { label: "동아리 모집 신청서", src: "/banner_listBottom.png", onPreview: handlePreview },
-		c: { label: "강의평가", src: "/banner_listBottom.png", onPreview: handlePreview },
-		d: { label: "이벤트 진행", src: "/banner_listBottom.png", onPreview: handlePreview },
-		e: { label: "서포터즈 모집", src: "/banner_listBottom.png", onPreview: handlePreview }
-	};
-	
 	const router = useRouter();
 	
 	// const fetcher = (url: string) => axios.get(url).then((res) => res.data);

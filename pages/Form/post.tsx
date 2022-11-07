@@ -6,7 +6,6 @@ import Text from "@components/elements/Text";
 import Sex from "@components/elementGroup/Sex";
 import Notice from "@components/elements/Notice";
 import Space from "@components/elements/Space";
-import Date from "@components/elementGroup/Date";
 import Account from "@components/elementGroup/Account";
 import Person from "@components/elementGroup/Person";
 import Education from "@components/elementGroup/Education";
@@ -15,13 +14,14 @@ import License from "@components/elementGroup/License";
 import { ThemeProvider } from "@mui/material/styles";
 import { SagaStore, wrapper } from "@store/index";
 import { END } from "redux-saga";
-import { getPostAction } from "@actions/post";
+import { addFormUserAction, getPostAction } from "@actions/post";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/reducers";
 import TextBox from "@components/elements/TextBox";
 import InputBox from "@components/elements/InputBox";
 import Agree from "@components/elementGroup/Agree";
 import { useRouter } from "next/router";
+import { addMoaFormUser } from "@api/index";
 
 const Forms: NextPage = () => {
 	const router = useRouter();
@@ -54,13 +54,9 @@ const Forms: NextPage = () => {
 				}
 			})
 		});
-		
-		console.log(inputGroup);
-		console.log(JSON.stringify(inputGroup));
-		
 	}, [form])
 	
-	// console.log(post);
+	// console.log(recruit);
 	
 	const createElements = (props: elementItem) => {
 		const { element } = props;
@@ -69,7 +65,7 @@ const Forms: NextPage = () => {
 			case "TextBox":
 				return <TextBox props={ props } />;
 			case "InputBox":
-				return <InputBox props={ props } />;
+				return <InputBox props={ props } onChange={ handleInputChange } />;
 			case "Space":
 				return <Space props={ props } />;
 			case "Agree":
@@ -133,6 +129,32 @@ const Forms: NextPage = () => {
 		return returnClassName;
 	}
 	
+	const handleInputChange = (e?: any) => {
+		const { id, name, value } = e.target;
+		console.log("변경?", id, name, value);
+	}
+	
+	const handleSubmit = () => {
+		const saveForm = form?.filter((dat: any, idx: number) => dat.items.length > 0);
+		
+		const date = new Date();
+		
+		const year = date.getFullYear();
+		const month = ('0' + (date.getMonth() + 1)).slice(-2);
+		const day = ('0' + date.getDate()).slice(-2);
+		
+		let newPost = {
+			post: 13,
+			user: 1,
+			date: `${year}${month}${day}`,
+			content: JSON.stringify(saveForm),
+		}
+		
+		console.log("저장하기 : ", newPost);
+		
+		// dispatch(addFormUserAction.request(newPost));
+	}
+	
 	return form ? (
 		<ThemeProvider
 			theme={ YDR_THEME }
@@ -190,7 +212,7 @@ const Forms: NextPage = () => {
 						);
 					})}
 					<CardActions>
-						<Button size="small">등록하기</Button>
+						<Button size="small" onClick={handleSubmit}>등록하기</Button>
 					</CardActions>
 				</Card>
 			</Container>

@@ -35,7 +35,7 @@ const DropLine: NextPage<ItemProps> = ({lineData, focusId, onClick, onRemove}) =
 	const [items, setItems] = useState<elementItem[]>();
 	
 	useEffect(() => {
-		// console.log("데이터가 변경됨", post);
+		// console.log("데이터가 변경됨", recruit);
 		const dat = post.line.filter((f:any) => f.id == lineData.id)[0];
 		
 		setList(post.line);
@@ -46,7 +46,7 @@ const DropLine: NextPage<ItemProps> = ({lineData, focusId, onClick, onRemove}) =
 	// useEffect(() => {
 	// 	console.log(lineData);
 	//
-	// 	// setList(post.line);
+	// 	// setList(recruit.line);
 	// 	setLine(lineData);
 	// 	setItems(lineData.items);
 	// }, [lineData]);

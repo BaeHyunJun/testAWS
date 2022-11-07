@@ -30,6 +30,11 @@ export const GET_POST_ERROR = "GET_POST_ERROR";
 
 export const getPostAction = createAsyncAction(GET_POST, GET_POST_SUCCESS, GET_POST_ERROR)<any, any, AxiosError>();
 
+export const ADD_FORM_USER = "ADD_FORM_USER";
+export const ADD_FORM_USER_SUCCESS = "ADD_FORM_USER_SUCCESS";
+export const ADD_FORM_USER_ERROR = "ADD_FORM_USER_ERROR";
+
+export const addFormUserAction = createAsyncAction(ADD_FORM_USER, ADD_FORM_USER_SUCCESS, ADD_FORM_USER_ERROR)<any, any, AxiosError>();
 
 export const GET_FORM_USER = "GET_FORM_USER";
 export const GET_FORM_USER_SUCCESS = "GET_FORM_USER_SUCCESS";

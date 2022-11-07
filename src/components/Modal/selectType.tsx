@@ -56,7 +56,7 @@ const SelectType: NextPage<ItemProps> = ({ open, handleClose }) => {
 				}}>
 					<Grid item xs={6}>
 						<Button>
-							<Link href={"/register/post"}>
+							<Link href={"/register/recruit"}>
 								<a>
 									<img src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/register.png"} alt={"모집신청"} width={100} height={100} />
 									<Typography variant={"caption"}>모집신청</Typography>

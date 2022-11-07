@@ -28,6 +28,8 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	
+	console.log(data);
+	
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -47,11 +49,12 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 			}}
 		>
 			{
-				data?.thumb ?
+				data?.thumbnail ?
 					<Button
 						sx={{
 							p: 0,
 							m: 0,
+							width: "100%",
 							"& .textBox": {
 								pt: "125px",
 								pb: "5px",
@@ -75,7 +78,7 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 						<CardMedia
 							component="img"
 							height="140"
-							image={ data?.thumb }
+							image={ data?.thumbnail }
 							alt="green iguana"
 						/>
 						<Box className={"textBox"}>
@@ -97,7 +100,7 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 					data?.title
 					?
 						<>
-							<Link href={`/register/post?id=${data?.id}`}>
+							<Link href={`/register/${data.type}?id=${data?.id}`}>
 								<a target={`_blank`}>
 									{ data?.title }
 								</a>

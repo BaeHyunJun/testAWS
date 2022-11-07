@@ -1,8 +1,8 @@
 import { call, all, fork, takeLatest, put } from "redux-saga/effects";
 import { AxiosError } from "axios";
-import { getFormUserAction, getPostAction, postAction, privatePostAction } from "@redux/actions/post"
+import { addFormUserAction, getFormUserAction, getPostAction, postAction, privatePostAction } from "@redux/actions/post"
 import { elementLine } from "@config/const";
-import { getMoaFormUser, getPost, updatePost } from "@api/index";
+import { addMoaFormUser, getMoaFormUser, getPost, updatePost } from "@api/index";
 
 type postData = {
   [type: string]: any;
@@ -44,13 +44,23 @@ function* getPostDataSaga(action: ReturnType<any>) {
 function* getFormUserSaga(action: ReturnType<any>) {
   try {
     const getData: postData = yield call(getMoaFormUser, action.payload);
-  
+    
     // console.log(action);
     // console.log(getData);
     
     yield put(getFormUserAction.success(getData.body));
   } catch (e) {
     yield put(getFormUserAction.failure(e as AxiosError));
+  }
+}
+
+function* addFormUserSaga(action: ReturnType<any>) {
+  try {
+    const getData: postData = yield call(addMoaFormUser, action.payload);
+    
+    yield put(addFormUserAction.success(getData));
+  } catch (e) {
+    yield put(addFormUserAction.failure(e as AxiosError));
   }
 }
 
@@ -62,6 +72,7 @@ function* watchLoadAllPosts() {
   
   // 신청자 데이터
   yield takeLatest(getFormUserAction.request, getFormUserSaga);
+  yield takeLatest(addFormUserAction.request, addFormUserSaga);
 }
 
 export default function* postsSaga() {

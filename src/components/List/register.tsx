@@ -60,19 +60,29 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 	const [userForm, setUserForm] = useState<any>();
 	const [currentItem, setCurrentItem] = useState<any>();
 	
+	// console.log(data);
+	
 	useEffect(() => {
 		let userGroup:any[] = [];
 		
 		post?.user?.map((dat:any, idx:number) => {
 			let inputGroup:any[] = [];
 			
-			dat.content.map((da:any, id:number) => {
-				da.items.map((d:any, i:number) => {
-					if (d.type == "Input") {
-						inputGroup.push(d);
+			try {
+				dat.content.map((da:any, id:number) => {
+					da.items.map((d:any, i:number) => {
+						if (d.type == "Input") {
+							inputGroup.push(d);
+						}
+					})
+				})
+			} catch (e) {
+				Object.keys(dat.content).map((da:any, id:number) => {
+					if (dat.content[da]) {
+						inputGroup.push(dat.content[da]);
 					}
 				})
-			})
+			}
 			userGroup.push({ id: dat.id, inputList: inputGroup })
 			inputGroup = [];
 		});
@@ -91,18 +101,26 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 		let inputGroup:any[] = [];
 		const currentItem = data?.filter((f:any) => f.id == id)[0];
 		
-		currentItem.content.map((dat:any, idx:number) => {
-			dat.items.map((da:any, id:number) => {
-				if (da.type == "Input") {
-					inputGroup.push(da);
+		try {
+			currentItem.content.map((dat:any, idx:number) => {
+				dat.items.map((da:any, id:number) => {
+					if (da.type == "Input") {
+						inputGroup.push(da);
+					}
+				})
+			});
+		} catch (e) {
+			Object.keys(currentItem.content).map((dat:any, idx:number) => {
+				if (currentItem.content[dat]) {
+					inputGroup.push(dat);
 				}
-			})
-		});
+			});
+		}
 		
 		setInputGroup(inputGroup);
 		setCurrentItem(currentItem);
 		setForm(currentItem.content);
-		
+
 		const info = {
 			user: currentItem.user,
 			post: currentItem.id,
@@ -111,7 +129,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 		dispatch(getFormUserAction.request(info));
 	}
 	
-	// console.log(currentItem?.id);
+	console.log(inputGroup);
 	
 	const [isDrawer, setIsDrawer] = useState(false);
 	const [isModal, setIsModal] = useState(false);
@@ -181,7 +199,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 		return returnClassName;
 	}
 	
-	console.log(userForm?.filter((f:any) => f.id == currentFormId))
+	// console.log(userForm?.filter((f:any) => f.id == currentFormId))
 	
 	return (
 		<Box
@@ -227,7 +245,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{data?.reverse().map((dat:any, idx:number) => (
+					{data?.sort((a: any, b: any) => a.order - b.order).map((dat:any, idx:number) => (
 						<TableRow key={idx}>
 							<TableCell>
 								<Typography>
@@ -362,7 +380,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 						<TableHead>
 							<TableRow>
 								{inputGroup.map((dat:any, idx:number) => {
-									return <TableCell key={idx}>{dat.label}</TableCell>;
+									return <TableCell key={idx}>{dat.label ? dat.label : dat}</TableCell>;
 								})}
 								<TableCell>
 									Action
@@ -376,7 +394,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 										{
 											dat.inputList.map((da:any, id:number) => {
 												return (
-													<TableCell key={id}>{ da.value }</TableCell>
+													<TableCell key={id}>{ da.value ? da.value : da }</TableCell>
 												)
 											})
 										}

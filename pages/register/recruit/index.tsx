@@ -96,12 +96,12 @@ const Index: NextPage = () => {
 		console.log("데이터 변경 : ", post);
 		
 		setElList(post.line);
-		// setTestText(post.title);
-		// setCurrentPost(post);
-		// setTitle(post.title);
+		// setTestText(recruit.title);
+		// setCurrentPost(recruit);
+		// setTitle(recruit.title);
 	}, [post])
 	
-	// console.log(post.line[0].items[0]);
+	// console.log(recruit.line[0].items[0]);
 	
 	const onChange = (e?: any) => {
 		// setFormState({ ...formState, [e.target.name]: e.target.value});

@@ -8,10 +8,11 @@ import { elementItem } from "@config/const";
 type ItemProps = {
 	props: any;
 	
-	// onClick:(id: number) => void;
+	onClick?:(id: number) => void;
+	onChange?:(e: any) => void;
 };
 
-const TextBox: NextPage<ItemProps> = ({props}) => {
+const TextBox: NextPage<ItemProps> = ({props, onClick, onChange}) => {
 	const [element, setElement] = useState<any>();
 	
 	useEffect(() => {
@@ -19,7 +20,11 @@ const TextBox: NextPage<ItemProps> = ({props}) => {
 	}, [props])
 	
 	const handleChange = (e?: any) => {
-		setElement({ ...element, "value": e.target.value});
+		const { value } = e.target;
+		// console.log("변경?", value);
+		// setElement({ ...element, "value": e.target.value});
+		onChange ? onChange(e) : props.value = value;
+		// console.log(props);
 	}
 	
 	const handleClick = () => {
@@ -152,6 +157,7 @@ const TextBox: NextPage<ItemProps> = ({props}) => {
 				variant={ "standard" }
 				placeholder={ element?.placeholder ? element?.placeholder : "내용을 입력해주세요." }
 				value={element?.value}
+				onChange={handleChange}
 				InputProps={{
 					startAdornment: element?.isLabel && element?.label && <InputAdornment position="start">{ element?.label }</InputAdornment>,
 					// endAdornment: endText ? endText : actionRemove ? <CloseIcon className="removeBtn" onClick={actionRemove} /> : null,
