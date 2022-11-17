@@ -66,16 +66,19 @@ const Event: NextPage = () => {
 		tel: false,
 		email: false,
 		address: false,
-		content: false
+		content: false,
+		isList: false,
 	}
 	
 	const [title, setTitle] = useState<string>("");
 	const [img, setImg] = useState<string>('');
 	const [eventState, setEventState] = useState(initState);
 	
-	const { name, birth, tel, email, address, content } = eventState;
+	const { name, birth, tel, email, address, content, isList } = eventState;
 	
-	const [user, setUser] = useState<any>([])
+	const [user, setUser] = useState<any>([]);
+	
+	const [endDate, setEndDate] = useState<any>(new Date());
 	
 	useEffect(() => {
 		if (post) {
@@ -83,6 +86,12 @@ const Event: NextPage = () => {
 			setImg(post.thumbnail);
 			post.line.length != 0 && setEventState(post.line);
 			setUser(post.user);
+			
+			if (post.endDate) {
+				let endDay = post.endDate?.toString().substring(0,4) + "-" + post.endDate?.toString().substring(4,6) + "-" + post.endDate?.toString().substring(6,8);
+				let endDate = new Date(endDay);
+				setEndDate(endDate);
+			}
 		} else {
 			setEventState(initState);
 		}
@@ -177,6 +186,8 @@ const Event: NextPage = () => {
 		}
 	}
 	
+	console.log(user?.length, post.count);
+	
 	return postID ? (
 		<ThemeProvider theme={ YDR_THEME }>
 			<CssBaseline />
@@ -196,178 +207,213 @@ const Event: NextPage = () => {
 				>
 					<img src={img} alt={`${title}`} width={"100%"} />
 				</Box>
-				<Box
-					sx={{
-						mb: 3,
-						"& .MuiTypography-caption": { pl: 2, mb: 2, fontSize: "1.2rem", letterSpacing: .1, color: "#436ff7" },
-						"& .MuiTypography-subtitle2": { mt: 2, p: 2, fontSize: "1.2rem", border: "1px solid #999", borderTop: "2px solid #436ff7", width: "100%", backgroundColor: "white", textAlign: "center" },
-						"& .agreeBox": { mt: 1, border: "1px solid #999", width: "100%", backgroundColor: "white" },
-						"& .inputBox": { my: 1, border: "1px solid #999", backgroundColor: "white" },
-					}}
-				>
-					<Box className={""}>
-						<Typography variant={"subtitle2"}>
-							이벤트 참가 신청서
-						</Typography>
-						<Box className={"agreeBox"}>
-							<Accordion>
-								<AccordionSummary expandIcon={<ExpandMoreIcon />}>
-									<Grid container spacing={2}>
-										<Grid item xs={10}>
-											<Typography variant={"subtitle1"} sx={{ lineHeight: "42px", fontSize: "1.2em"}}>
-												개인정보 취급 방침 약관
+				
+				{
+					endDate < new Date() || user?.length >= post.count ? (
+						<Box
+							sx={{
+								mb: 3,
+								"& .MuiTypography-caption": { pl: 2, mb: 2, fontSize: "1.2rem", letterSpacing: .1, color: "#436ff7" },
+								"& .MuiTypography-subtitle2": { mt: 2, p: 2, fontSize: "1.2rem", border: "1px solid #999", borderTop: "2px solid #436ff7", width: "100%", backgroundColor: "white", textAlign: "center" },
+								"& .agreeBox": { mt: 1, border: "1px solid #999", width: "100%", backgroundColor: "white" },
+								"& .inputBox": { my: 1, border: "1px solid #999", backgroundColor: "white" },
+							}}
+						>
+							<Box className={""}>
+								<Typography variant={"subtitle2"}>
+									현재 이벤트는 마감되었습니다.
+								</Typography>
+							</Box>
+						</Box>
+					) : (
+					<>
+						<Box
+							sx={{
+								mb: 3,
+								"& .MuiTypography-caption": { pl: 2, mb: 2, fontSize: "1.2rem", letterSpacing: .1, color: "#436ff7" },
+								"& .MuiTypography-subtitle2": { mt: 2, p: 2, fontSize: "1.2rem", border: "1px solid #999", borderTop: "2px solid #436ff7", width: "100%", backgroundColor: "white", textAlign: "center" },
+								"& .agreeBox": { mt: 1, border: "1px solid #999", width: "100%", backgroundColor: "white" },
+								"& .inputBox": { my: 1, border: "1px solid #999", backgroundColor: "white" },
+							}}
+						>
+							<Box className={""}>
+								<Typography variant={"subtitle2"}>
+									이벤트 참가 신청서
+								</Typography>
+								<Box className={"agreeBox"}>
+									<Accordion>
+										<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+											<Grid container spacing={2}>
+												<Grid item xs={10}>
+													<Typography variant={"subtitle1"} sx={{ lineHeight: "42px", fontSize: "1.2em"}}>
+														개인정보 취급 방침 약관
+													</Typography>
+												</Grid>
+												<Grid item xs={2}>
+													<FormControlLabel control={<Checkbox name={"agree"} checked={checkAgree} onClick={() => setCheckAgree(!checkAgree)}  />} label={ "약관 동의" } />
+												</Grid>
+											</Grid>
+										</AccordionSummary>
+										<AccordionDetails>
+											<Typography>
+												(재)영주세계풍기인삼엑스포조직위원회는 후기 이벤트와 관련하여 아래와 같은 개인정보를 수집·이용합니다.<br />
+												(재)영주세계풍기인삼엑스포조직위원회는 「개인정보보호법」에 따라 응모자의 개인정보를 관리하며,<br />
+												수집하는 개인정보의 목적, 항목, 보유 기한은 다음과 같습니다.<br /><br />
 											</Typography>
-										</Grid>
-										<Grid item xs={2}>
-											<FormControlLabel control={<Checkbox name={"agree"} checked={checkAgree} onClick={() => setCheckAgree(!checkAgree)}  />} label={ "약관 동의" } />
-										</Grid>
-									</Grid>
-								</AccordionSummary>
-								<AccordionDetails>
-									<Typography>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-										malesuada lacus ex, sit amet blandit leo lobortis eget.
-									</Typography>
-								</AccordionDetails>
-							</Accordion>
-							
+										
+											<Typography>
+												■ 개인정보 수집 및 이용 목적 : 이벤트 참여 및 경품 발송<br /><br />
+												
+												■ 수집하는 개인정보 항목 : { name && "이름" } { birth && "생년월일" } { tel && "연락처" } { email && "이메일" } { address && "주소" }
+												<br /><br />
+												
+												■ 개인정보의 보유 및 이용기간 : 수집 및 이용목적(경품 발송) 달성 후 즉시 파기<br /><br />
+												
+												※ 개인정보제공에 동의를 거부할 수 있으며, 이 경우 이벤트 참여 참여가 제한됩니다.
+											</Typography>
+										</AccordionDetails>
+									</Accordion>
+									
+								</Box>
+								<Box className={"inputBox"}>
+									<Table>
+										<colgroup>
+											<col width={"20%"} />
+											<col />
+										</colgroup>
+										<TableBody>
+											{
+												name && (
+													<TableRow>
+														<TableCell>
+															이름
+														</TableCell>
+														<TableCell>
+															<TextField
+																fullWidth
+																size={ "small" }
+																placeholder={ "김모아" }
+																name={"name"}
+																onChange={onInputChange}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											}
+											{
+												birth && (
+													<TableRow>
+														<TableCell>
+															생년월일
+														</TableCell>
+														<TableCell>
+															<TextField
+																fullWidth
+																size={ "small" }
+																placeholder={ "1987-01-01" }
+																name={"birth"}
+																onChange={onInputChange}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											}
+											{
+												tel && (
+													<TableRow>
+														<TableCell>
+															연락처
+														</TableCell>
+														<TableCell>
+															<TextField
+																fullWidth
+																size={ "small" }
+																placeholder={ "010-1234-5678" }
+																name={"tel"}
+																onChange={onInputChange}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											}
+											{
+												email && (
+													<TableRow>
+														<TableCell>
+															이메일
+														</TableCell>
+														<TableCell>
+															<TextField
+																fullWidth
+																size={ "small" }
+																placeholder={ "moacube@moacube.co.kr" }
+																name={"email"}
+																onChange={onInputChange}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											}
+											{
+												address && (
+													<TableRow>
+														<TableCell>
+															주소
+														</TableCell>
+														<TableCell>
+															<TextField
+																fullWidth
+																size={ "small" }
+																placeholder={ "부산광역시 연제구 법원남로 9번길 17" }
+																name={"address"}
+																onChange={onInputChange}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											}
+											{
+												content && (
+													<TableRow>
+														<TableCell>
+															내용
+														</TableCell>
+														<TableCell>
+															<TextField
+																fullWidth
+																multiline
+																rows={ 5 }
+																size={ "small" }
+																placeholder={ "내용을 입력해주세요." }
+																name={"content"}
+																onChange={onInputChange}
+															/>
+														</TableCell>
+													</TableRow>
+												)
+											}
+										</TableBody>
+									</Table>
+								</Box>
+							</Box>
 						</Box>
-						<Box className={"inputBox"}>
-							<Table>
-								<colgroup>
-									<col width={"20%"} />
-									<col />
-								</colgroup>
-								<TableBody>
-									{
-										name && (
-											<TableRow>
-												<TableCell>
-													이름
-												</TableCell>
-												<TableCell>
-													<TextField
-														fullWidth
-														size={ "small" }
-														placeholder={ "김모아" }
-														name={"name"}
-														onChange={onInputChange}
-													/>
-												</TableCell>
-											</TableRow>
-										)
-									}
-									{
-										birth && (
-											<TableRow>
-												<TableCell>
-													생년월일
-												</TableCell>
-												<TableCell>
-													<TextField
-														fullWidth
-														size={ "small" }
-														placeholder={ "1987-01-01" }
-														name={"birth"}
-														onChange={onInputChange}
-													/>
-												</TableCell>
-											</TableRow>
-										)
-									}
-									{
-										tel && (
-											<TableRow>
-												<TableCell>
-													연락처
-												</TableCell>
-												<TableCell>
-													<TextField
-														fullWidth
-														size={ "small" }
-														placeholder={ "010-1234-5678" }
-														name={"tel"}
-														onChange={onInputChange}
-													/>
-												</TableCell>
-											</TableRow>
-										)
-									}
-									{
-										email && (
-											<TableRow>
-												<TableCell>
-													이메일
-												</TableCell>
-												<TableCell>
-													<TextField
-														fullWidth
-														size={ "small" }
-														placeholder={ "moacube@moacube.co.kr" }
-														name={"email"}
-														onChange={onInputChange}
-													/>
-												</TableCell>
-											</TableRow>
-										)
-									}
-									{
-										address && (
-											<TableRow>
-												<TableCell>
-													주소
-												</TableCell>
-												<TableCell>
-													<TextField
-														fullWidth
-														size={ "small" }
-														placeholder={ "부산광역시 연제구 법원남로 9번길 17" }
-														name={"address"}
-														onChange={onInputChange}
-													/>
-												</TableCell>
-											</TableRow>
-										)
-									}
-									{
-										content && (
-											<TableRow>
-												<TableCell>
-													내용
-												</TableCell>
-												<TableCell>
-													<TextField
-														fullWidth
-														multiline
-														rows={ 5 }
-														size={ "small" }
-														placeholder={ "내용을 입력해주세요." }
-														name={"content"}
-														onChange={onInputChange}
-													/>
-												</TableCell>
-											</TableRow>
-										)
-									}
-								</TableBody>
-							</Table>
+						
+						<Box
+							sx={{
+								pt: 1,
+								pb: 5,
+								textAlign: "center",
+								"& .MuiButton-root": { m: 3, p: 1, width: "50%", backgroundColor: "#5672f7" },
+							}}
+						>
+							<Button variant="contained" onClick={onSubmitEvent}>
+								이벤트 신청하기
+							</Button>
 						</Box>
-					</Box>
-				</Box>
-				
-				<Box
-					sx={{
-						pt: 1,
-						pb: 5,
-						textAlign: "center",
-						"& .MuiButton-root": { m: 3, p: 1, width: "50%", backgroundColor: "#5672f7" },
-					}}
-				>
-					<Button variant="contained" onClick={onSubmitEvent}>
-						이벤트 신청하기
-					</Button>
-				</Box>
-				
+					</>
+					)
+				}
+				{isList && user?.length > 0 && (
 				<Box
 					sx={{
 						mb: 3,
@@ -378,7 +424,6 @@ const Event: NextPage = () => {
 						이벤트 참가자
 					</Typography>
 					{user?.map((data:any, idx:number) => {
-						console.log(data);
 						return (
 							<>
 							<List sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -430,6 +475,8 @@ const Event: NextPage = () => {
 						)
 					})}
 				</Box>
+				
+				)}
 			</Container>
 		</ThemeProvider>
 	) : <></>;

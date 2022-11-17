@@ -66,6 +66,9 @@ const post = createReducer<any, postAction>(initData, {
 		title: action.payload.title,
 		type: action.payload.type,
 		line: action.payload.content,
+		count: action.payload.count,
+		startDate: action.payload.startDate,
+		endDate: action.payload.endDate,
 		thumbnail: action.payload.thumbnail,
 	}),
 	[GET_POST_ERROR]: (state, action) => ({

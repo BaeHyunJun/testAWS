@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -18,7 +18,7 @@ import {
 	Table,
 	TableBody,
 	TableRow,
-	TableCell, Button,
+	TableCell, Button, FormControl, InputAdornment,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -38,13 +38,18 @@ import { getPostAction, postAction } from "@actions/post";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/reducers";
 
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { updatePost } from "@api/index";
+
 const initState = {
 	name: true,
 	birth: false,
 	tel: false,
 	email: false,
 	address: false,
-	content: false
+	content: false,
+	isList: false,
 }
 
 const Event: NextPage = () => {
@@ -55,9 +60,18 @@ const Event: NextPage = () => {
 	const [uiState, setUiState] = useState<string>('');
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 	
+	const [startDate, setStartDate] = useState<any>(new Date());
+	const [endDate, setEndDate] = useState<any>(new Date());
+	const [count, setCount] = useState<number>(0);
 	const [title, setTitle] = useState<string>("");
 	const [file, setFile] = useState<any>("")
 	const [eventState, setEventState] = useState(initState);
+	
+	const onInputCount = (e?: any) => {
+		const { value } = e.target;
+		
+		setCount(value);
+	}
 	
 	const onInputTitle = (e?: any) => {
 		const { value } = e.target;
@@ -69,7 +83,7 @@ const Event: NextPage = () => {
 		setEventState({ ...eventState, [e.target.name]: e.target.checked});
 	}
 	
-	const { name, birth, tel, email, address, content } = eventState;
+	const { name, birth, tel, email, address, content, isList } = eventState;
 	
 	const [postID, setPostID] = useState<number>(0);
 	const post = useSelector((state: RootState) => state.post, shallowEqual);
@@ -79,7 +93,7 @@ const Event: NextPage = () => {
 		
 		if (id != undefined) {
 			setPostID(parseInt(id.toString()));
-			dispatch (getPostAction.request (id));
+			dispatch(getPostAction.request (id));
 		}
 	}, [router, dispatch]);
 	
@@ -87,6 +101,20 @@ const Event: NextPage = () => {
 		if (post) {
 			setTitle(post.title);
 			setImg(post.thumbnail);
+			setCount(post.count);
+			
+			if (post.startDate) {
+				let startDay = post.startDate?.toString().substring(0,4) + "-" + post.startDate?.toString().substring(4,6) + "-" + post.startDate?.toString().substring(6,8);
+				let startDate = new Date(startDay);
+				setStartDate(startDate);
+			}
+			
+			if (post.endDate) {
+				let endDay = post.endDate?.toString().substring(0,4) + "-" + post.endDate?.toString().substring(4,6) + "-" + post.endDate?.toString().substring(6,8);
+				let endDate = new Date(endDay);
+				setEndDate(endDate);
+			}
+			
 			post.line.length != 0 && setEventState(post.line);
 		} else {
 			setEventState(initState);
@@ -251,6 +279,9 @@ const Event: NextPage = () => {
 				type: "event",
 				user: 1,
 				order: 1,
+				startDay: startDate,
+				endDay: endDate,
+				count,
 				date: `${year}${month}${day}`,
 				content: JSON.stringify(eventState),
 				thumbnail: filePath ? `${API.S3}${filePath}` : ""
@@ -259,7 +290,13 @@ const Event: NextPage = () => {
 			const id = router.query.id;
 			if (id != undefined) newPost.id = id.toString();
 			
-			dispatch(postAction.request(newPost));
+			// dispatch(postAction.request(newPost));
+			
+			updatePost(newPost).then((res) => {
+				alert("이벤트가 생성되었습니다.");
+				
+				router.push("/register");
+			})
 			
 			unDisabledButton(e);
 		} catch (err) {
@@ -267,6 +304,23 @@ const Event: NextPage = () => {
 			return unDisabledButton(e);
 		}
 	}
+	
+	// eslint-disable-next-line react/display-name
+	const CustomDateTimeInput = forwardRef((props:any, ref:any) => {
+		const { name, value, placeholder, onClick } = props;
+		
+		return (
+			<TextField
+				size="small"
+				fullWidth
+				ref={ ref }
+				name={ name }
+				value={ value }
+				onClick={ onClick }
+				placeholder={ placeholder }
+			/>
+		)
+	});
 	
 	if (!uiState) {
 		return <></>
@@ -343,6 +397,132 @@ const Event: NextPage = () => {
 						/>
 					</Box>
 				</Box>
+				<Box
+					sx={{
+						mb: 3,
+						"& .MuiTypography-caption": { pl: 2, mb: 2, fontSize: "1.2rem", letterSpacing: .1, color: "#436ff7" },
+						"& .MuiTypography-subtitle1": { pl: 1, fontSize: "1.3rem", display: "inline" },
+						"& .MuiTypography-subtitle2": { mt: 2, p: 2, fontSize: "1.2rem", border: "1px solid #999", borderTop: "2px solid #436ff7", width: "100%", backgroundColor: "white", textAlign: "center" },
+						"& .inputBox": { mt: .5, mb: 3, border: "1px solid #999", backgroundColor: "white" },
+					}}
+				>
+					<Typography variant={"caption"} component={"span"}>STEP 2.</Typography>
+					<Typography variant={"subtitle1"}>이벤트 설정</Typography>
+					
+					<Box sx={{
+						mt: 2,
+						p: 0,
+						fontSize: "1.2rem",
+						// border: "1px solid #999",
+						// borderTop: "2px solid #436ff7",
+						width: "100%",
+						backgroundColor: "white",
+						textAlign: "center",
+						"& .MuiInputBase-root": {
+							// p: 1,
+						},
+						"& .MuiTableCell-root": {
+							py: 0,
+						}
+						// "& .react-datepicker-wrapper": {
+						// 	width: "30%",
+						// }
+					}}>
+						<Typography variant={"subtitle2"}>
+							이벤트 기간 설정
+						</Typography>
+					</Box>
+					
+					<Box className={"inputBox"}>
+						<Table>
+							<colgroup>
+								<col width={"20%"} />
+								<col />
+								<col width={"20%"} />
+								<col />
+							</colgroup>
+							<TableBody>
+								<TableRow>
+									<TableCell>
+										시작 날짜
+									</TableCell>
+									<TableCell>
+										<ReactDatePicker
+											name="startDay"
+											selected={startDate}
+											onChange={(date) => setStartDate(date)}
+											dateFormat="yyyy년 MM월 dd일"
+											selectsStart
+											startDate={startDate}
+											endDate={endDate}
+											customInput={<CustomDateTimeInput />}
+										/>
+									</TableCell>
+								{/*</TableRow>*/}
+								{/*<TableRow>*/}
+									<TableCell>
+										마감 날짜
+									</TableCell>
+									<TableCell>
+										<ReactDatePicker
+											name="endDay"
+											selected={endDate}
+											onChange={(date) => setEndDate(date)}
+											dateFormat="yyyy년 MM월 dd일"
+											selectsEnd
+											startDate={startDate}
+											endDate={endDate}
+											minDate={startDate}
+											customInput={<CustomDateTimeInput />}
+										/>
+									</TableCell>
+								</TableRow>
+							</TableBody>
+						</Table>
+					</Box>
+					
+					<Typography variant={"subtitle2"}>
+						이벤트 설정
+					</Typography>
+					
+					<Box className={"inputBox"}>
+						<Table>
+							<colgroup>
+								<col width={"20%"} />
+								<col />
+							</colgroup>
+							<TableBody>
+								<TableRow>
+									<TableCell>
+										참가자 노출
+									</TableCell>
+									<TableCell>
+										<FormControlLabel control={<Checkbox name={"isList"} checked={isList} onChange={onChange} />} label={ "노출" }/>
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>
+										마김 인원
+									</TableCell>
+									<TableCell>
+										<TextField
+											fullWidth
+											size={ "small" }
+											name={ "count" }
+											type={ "number" }
+											placeholder={ "00" }
+											value={count || ""}
+											onChange={onInputCount}
+											InputProps={{
+												endAdornment: <InputAdornment position="end">명</InputAdornment>
+											}}
+										/>
+									</TableCell>
+								</TableRow>
+							</TableBody>
+						</Table>
+					</Box>
+				</Box>
 				{/*<Box*/}
 				{/*	sx={{*/}
 				{/*		mb: 3,*/}
@@ -362,11 +542,11 @@ const Event: NextPage = () => {
 						mb: 5,
 						"& .MuiTypography-caption": { pl: 2, mb: 2, fontSize: "1.2rem", letterSpacing: .1, color: "#436ff7" },
 						"& .MuiTypography-subtitle1": { pl: 1, fontSize: "1.3rem", display: "inline" },
-						"& .imageBox": { m: 0, my: 2, p: 0, textAlign: "center", width: "100%", minHeight: "500px", backgroundColor: "white", border: "1px solid #436ff7" },
+						"& .imageBox": { m: 0, my: 2, p: 0, textAlign: "center", width: "100%", minHeight: "150px", backgroundColor: "white", border: "1px solid #436ff7" },
 						"& .MuiTypography-body1": { fontSize: "1.2rem", color: "#999", lineHeight: "500px" },
 					}}
 				>
-					<Typography variant={"caption"} component={"span"}>STEP 2.</Typography>
+					<Typography variant={"caption"} component={"span"}>STEP 3.</Typography>
 					<Typography variant={"subtitle1"}>이미지 업로드</Typography>
 					<Box className={"imageBox"} sx={{
 						display: "flex",
@@ -421,7 +601,7 @@ const Event: NextPage = () => {
 						"& .inputBox": { my: 3, border: "1px solid #999", backgroundColor: "white" },
 					}}
 				>
-					<Typography variant={"caption"} component={"span"}>STEP 3.</Typography>
+					<Typography variant={"caption"} component={"span"}>STEP 4.</Typography>
 					<Typography variant={"subtitle1"}>입력 요소 선택</Typography>
 					<Box className={""}>
 						<Typography variant={"subtitle2"}>
