@@ -6,14 +6,14 @@ import {
 	Button, Card,
 	Container,
 	Drawer,
-	Grid, Modal,
+	Grid, IconButton, InputAdornment, Modal,
 	Paper,
 	Table,
 	TableBody,
 	TableCell,
 	TableContainer,
 	TableHead,
-	TableRow,
+	TableRow, TextField,
 	Typography,
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -30,6 +30,7 @@ import InputBox from "@components/elements/InputBox";
 import Space from "@components/elements/Space";
 import Agree from "@components/elementGroup/Agree";
 import Person from "@components/elementGroup/Person";
+import CasinoIcon from '@mui/icons-material/Casino';
 
 type ItemProps = {
 	data: any;
@@ -374,6 +375,25 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 					<Button variant={`outlined`} onClick={handleCloseDrawer}>
 						닫기
 					</Button>
+					<Box sx={{
+						display: "inline-flex",
+						float: "right",
+					}}>
+						<TextField
+							required
+							label="당첨자 수"
+							size={"small"}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton edge="end">
+											<CasinoIcon />
+										</IconButton>
+									</InputAdornment>
+								)
+							}}
+						/>
+					</Box>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
 						<TableHead>
 							<TableRow>
