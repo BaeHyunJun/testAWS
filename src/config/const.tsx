@@ -25,6 +25,27 @@ export enum API {
 	// // KAKAO_API_KEY="df5c0cdd518cfe4c738ea669381c19ef",
 }
 
+export const convertTitle = (text:string) => {
+	let returnText = "";
+	
+	switch (text) {
+		case "name":
+			returnText = "이름";
+			break;
+		case "birth":
+			returnText = "생년월일";
+			break;
+		case "content":
+			returnText = "내용";
+			break;
+		default:
+			returnText = text;
+			break;
+	}
+	
+	return returnText;
+}
+
 export type defaultParams = {
 	[type: string]: any;
 	id?: any;

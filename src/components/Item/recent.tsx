@@ -28,8 +28,6 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	
-	console.log(data);
-	
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -42,7 +40,7 @@ const Recent: NextPage<ItemProps> = ({ data, title, src, onModal }) => {
 		<Card
 			sx={{
 				mx: 2,
-				width: "20%",
+				minWidth: 200,
 				border: " 1px solid #efefef",
 				"& .MuiCardMedia-root": { minHeight: "160px", },
 				"& .MuiButton-root": { color: "black", backgroundColor: "transparent" },

@@ -95,25 +95,25 @@ const Home: NextPage = () => {
 		return <ThemeProvider theme={ YDR_THEME }>
 			<CssBaseline/>
 			
-			<Container maxWidth={ false } sx={ { mr: 0, width: "100%" } }>
+			<Container maxWidth={ false } sx={ { mr: 0, width: "100%", minWidth: 1200, backgroundColor: "white" } }>
 				<Header isLogin={ isLoginState } onSignOut={ onSignOut }/>
 				<SubMemu />
+			
+				<Box sx={{ pt: "144px", fontSize: 0 }}>
+					<Container sx={{ p: 3 }}>
+						<CategoryBox title={"어떤 모집을 하시나요?"} data={categoryMenu} />
+						
+						<Box sx={{ py: 8, textAlign: "center" }}>
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/JaamuJV6sNA" title="YouTube video player"
+							        frameBorder="0"
+							        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							        allowFullScreen></iframe>
+						</Box>
+					</Container>
+				</Box>
+				
+				<OpenRecent data={data?.body} />
 			</Container>
-			
-			<Box sx={{ pt: "144px", fontSize: 0, backgroundColor: "white" }}>
-				<Container sx={{ p: 3 }}>
-					<CategoryBox title={"어떤 모집을 하시나요?"} data={categoryMenu} />
-					
-					<Box sx={{ py: 8, textAlign: "center" }}>
-						<iframe width="560" height="315" src="https://www.youtube.com/embed/JaamuJV6sNA" title="YouTube video player"
-						        frameBorder="0"
-						        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-						        allowFullScreen></iframe>
-					</Box>
-				</Container>
-			</Box>
-			
-			<OpenRecent data={data?.body} />
 			
 			<Footer/>
 		</ThemeProvider>

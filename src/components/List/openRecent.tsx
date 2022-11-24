@@ -68,7 +68,7 @@ const OpenRecent: NextPage<ItemProps> = ({ data }) => {
 				borderTop: "1px solid #efefef"
 			}}
 		>
-			<Container sx={{ display: "flex" }}>
+			<Container sx={{ display: "flex", overflow: "auto", pb: 3 }}>
 				<Recent onModal={handleSelecType} />
 				{
 					data?.map((dat:any, idx: number) =>

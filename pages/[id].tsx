@@ -13,7 +13,7 @@ import {
 	Typography
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
-import { elementItem, YDR_THEME } from "@config/const";
+import { API, elementItem, YDR_THEME } from "@config/const";
 import Text from "@components/elements/Text";
 import Sex from "@components/elementGroup/Sex";
 import Notice from "@components/elements/Notice";
@@ -35,6 +35,7 @@ import Agree from "@components/elementGroup/Agree";
 import { useRouter } from "next/router";
 import { addMoaFormUser } from "@api/index";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AWS from "aws-sdk";
 
 const Event: NextPage = () => {
 	const router = useRouter();
@@ -68,13 +69,14 @@ const Event: NextPage = () => {
 		address: false,
 		content: false,
 		isList: false,
+		attachments: 0,
 	}
 	
 	const [title, setTitle] = useState<string>("");
 	const [img, setImg] = useState<string>('');
 	const [eventState, setEventState] = useState(initState);
 	
-	const { name, birth, tel, email, address, content, isList } = eventState;
+	const { name, birth, tel, email, address, content, isList, attachments } = eventState;
 	
 	const [user, setUser] = useState<any>([]);
 	
@@ -175,18 +177,150 @@ const Event: NextPage = () => {
 			user: 1,
 			date: `${year}${month}${day}`,
 			content: `${JSON.stringify(eventInputState)}`,
+			attachment1: `${API.S3}${uploadS3File(file1)}` || "",
+			attachment2: `${API.S3}${uploadS3File(file2)}` || "",
+			attachment3: `${API.S3}${uploadS3File(file3)}` || "",
 		}
 		
 		try {
 			dispatch(addFormUserAction.request(newPost));
+			// console.log(newPost);
 			
 			alert("이벤트 신청이 완료되었습니다.");
+			// unDisabledButton(e);
 		} catch (err) {
 			console.log(err);
 		}
 	}
 	
-	console.log(user?.length, post.count);
+	const [file1, setFile1] = useState<any>("")
+	const [file2, setFile2] = useState<any>("")
+	const [file3, setFile3] = useState<any>("")
+	const [thumb1, setThumb1] = useState<any>('');
+	const [thumb2, setThumb2] = useState<any>('');
+	const [thumb3, setThumb3] = useState<any>('');
+	
+	AWS.config.update({
+		accessKeyId: API.S3_ACCESS_KEY,
+		secretAccessKey: API.S3_SECRET_ACCESS_KEY,
+	});
+	
+	const myBucket = new AWS.S3({
+		params: { Bucket: API.BUCKET},
+		region: API.REGION,
+	});
+	
+	const uploadS3File = (file: any) => {
+		const date = new Date();
+		
+		const year = date.getFullYear();
+		const month = ('0' + (date.getMonth() + 1)).slice(-2);
+		const day = ('0' + date.getDate()).slice(-2);
+		
+		const hour = ('0' + date.getHours()).slice(-2);
+		const minute = ('0' + date.getMinutes()).slice(-2);
+		const second = ('0' + date.getSeconds()).slice(-2);
+		
+		let filePath = "";
+		
+		if (file) {
+			filePath = `event/${year}/${month}/${day}/${hour}_${minute}_${second}_${file.name}`;
+			
+			// s3 파일 생성
+			const params = {
+				ACL: 'public-read',
+				Body: file,
+				Bucket: API.BUCKET,
+				Key: filePath,
+				ContentType: "",
+			};
+			
+			myBucket.putObject(params)
+			// .on('httpUploadProgress', (evt) => {
+			// })
+			.send((err) => {
+				if (err) console.log(err)
+			})
+		}
+		
+		return filePath;
+	}
+	
+	const onSelectedFile = (e?: any) => {
+		const { name, files } = e.target;
+		
+		const file = files[0];
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+
+		return new Promise((resolve) => {
+			reader.onload = () => {
+				switch (name) {
+					case "file1":
+						setFile1(file);
+						setThumb1(reader.result);
+						break;
+					case "file2":
+						setFile2(file);
+						setThumb2(reader.result);
+						break;
+					case "file3":
+						setFile3(file);
+						setThumb3(reader.result);
+						break;
+				}
+			};
+		});
+	}
+	
+	const viewAttachments = () => {
+		let html = [];
+		
+		for (let i = 0; i < attachments; i++) {
+			let img;
+			
+			switch (i) {
+				case 0:
+					img = thumb1;
+					break;
+				case 1:
+					img = thumb2;
+					break;
+				case 2:
+					img = thumb3;
+					break;
+			}
+			
+			html.push(
+				<TableRow key={i}>
+					<TableCell>
+						첨부파일 { i + 1}
+					</TableCell>
+					<TableCell>
+						<Grid container>
+							<Grid item xs={3} sx={img ? { lineHeight: "150px" } : {}}>
+								<Button variant="outlined" component={"label"}>
+									파일 업로드
+									<input name={`file${i+1}`} hidden accept="image/*" multiple type="file" onChange={onSelectedFile} />
+								</Button>
+							</Grid>
+							<Grid item xs={9}>
+								{ img && (
+									<Box sx={{ width: 150, height: 150, overflow: "hidden", border: "1px solid gray" }}>
+										<img src={img} alt={`첨부파일${i + 1}`} width={"100%"} />
+									</Box>
+								)}
+							</Grid>
+						</Grid>
+					</TableCell>
+				</TableRow>
+			);
+		}
+		
+		return html;
+	}
+	
+	// console.log(user?.length, post.count);
 	
 	return postID ? (
 		<ThemeProvider theme={ YDR_THEME }>
@@ -392,6 +526,7 @@ const Event: NextPage = () => {
 													</TableRow>
 												)
 											}
+											{ viewAttachments() }
 										</TableBody>
 									</Table>
 								</Box>

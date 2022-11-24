@@ -24,7 +24,7 @@ import Link from "next/link";
 import { getFormUserAction } from "@actions/post";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "@redux/reducers";
-import { elementItem } from "@config/const";
+import { convertTitle, elementItem } from "@config/const";
 import TextBox from "@components/elements/TextBox";
 import InputBox from "@components/elements/InputBox";
 import Space from "@components/elements/Space";
@@ -113,10 +113,13 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 		} catch (e) {
 			Object.keys(currentItem.content).map((dat:any, idx:number) => {
 				if (currentItem.content[dat]) {
-					inputGroup.push(dat);
+					(dat !== "attachment" && dat !== "attachments") && inputGroup.push(dat);
 				}
 			});
 		}
+		
+		// delete inputGroup.attachment;
+		// delete inputGroup.attachments;
 		
 		setInputGroup(inputGroup);
 		setCurrentItem(currentItem);
@@ -199,6 +202,9 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 	}
 	
 	// console.log(userForm?.filter((f:any) => f.id == currentFormId))
+	const onWinUser = () => {
+		console.log(userList);
+	}
 	
 	return (
 		<Box
@@ -335,22 +341,22 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 						border: "1px solid black",
 					}}
 				>
-					{userForm?.filter((f:any) => f.id == currentFormId)[0]?.content?.map((dat:any, idx:number) => {
-							const length = dat.items.length;
-							return (
-								<Box key={idx}>
-									<Grid container>
-										{dat.items.map((da:any, id:number) => {
-											return (
-												<Grid key={id} item xs={12 / length} className={`${setClassName(da)} ${dat.items.length > 1 ? id ? "el-right" : "el-left" : ""}`}>
-													{ createElements(da) }
-												</Grid>
-											);
-										})}
-									</Grid>
-								</Box>
-							);
-					})}
+					{/*{userForm?.filter((f:any) => f.id == currentFormId)[0]?.content?.map((dat:any, idx:number) => {*/}
+					{/*		const length = dat.items.length;*/}
+					{/*		return (*/}
+					{/*			<Box key={idx}>*/}
+					{/*				<Grid container>*/}
+					{/*					{dat.items.map((da:any, id:number) => {*/}
+					{/*						return (*/}
+					{/*							<Grid key={id} item xs={12 / length} className={`${setClassName(da)} ${dat.items.length > 1 ? id ? "el-right" : "el-left" : ""}`}>*/}
+					{/*								{ createElements(da) }*/}
+					{/*							</Grid>*/}
+					{/*						);*/}
+					{/*					})}*/}
+					{/*				</Grid>*/}
+					{/*			</Box>*/}
+					{/*		);*/}
+					{/*})}*/}
 				</Card>
 			</Modal>
 			
@@ -386,7 +392,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 							InputProps={{
 								endAdornment: (
 									<InputAdornment position="end">
-										<IconButton edge="end">
+										<IconButton edge="end" onClick={onWinUser}>
 											<CasinoIcon />
 										</IconButton>
 									</InputAdornment>
@@ -398,7 +404,7 @@ const Partners: NextPage<ItemProps> = ({data}) => {
 						<TableHead>
 							<TableRow>
 								{inputGroup.map((dat:any, idx:number) => {
-									return <TableCell key={idx}>{dat.label ? dat.label : dat}</TableCell>;
+									return <TableCell key={idx}>{convertTitle(dat.label ? dat.label : dat)}</TableCell>;
 								})}
 								<TableCell>
 									Action

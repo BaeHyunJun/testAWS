@@ -18,7 +18,7 @@ import {
 	Table,
 	TableBody,
 	TableRow,
-	TableCell, Button, FormControl, InputAdornment,
+	TableCell, Button, FormControl, InputAdornment, MenuItem, Select,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -50,6 +50,7 @@ const initState = {
 	address: false,
 	content: false,
 	isList: false,
+	attachments: 0,
 }
 
 const Event: NextPage = () => {
@@ -83,7 +84,11 @@ const Event: NextPage = () => {
 		setEventState({ ...eventState, [e.target.name]: e.target.checked});
 	}
 	
-	const { name, birth, tel, email, address, content, isList } = eventState;
+	const onChangeAttachments = (e?: any) => {
+		setEventState({ ...eventState, [e.target.name]: e.target.value});
+	}
+	
+	const { name, birth, tel, email, address, content, isList, attachments } = eventState;
 	
 	const [postID, setPostID] = useState<number>(0);
 	const post = useSelector((state: RootState) => state.post, shallowEqual);
@@ -292,9 +297,13 @@ const Event: NextPage = () => {
 			
 			// dispatch(postAction.request(newPost));
 			
+			// console.log(attachments);
+			// console.log(eventState);
+			// console.log(newPost);
+			
 			updatePost(newPost).then((res) => {
 				alert("이벤트가 생성되었습니다.");
-				
+
 				router.push("/register");
 			})
 			
@@ -322,6 +331,31 @@ const Event: NextPage = () => {
 		)
 	});
 	
+	const viewAttachments = () => {
+		let html = [];
+		
+		for (let i = 0; i < attachments; i++) {
+			html.push(
+				<TableRow key={i}>
+					<TableCell>
+						첨부파일 { i + 1}
+					</TableCell>
+					<TableCell>
+						<Button variant="outlined" component={"label"}>
+							파일 업로드
+							<input hidden accept="image/*" multiple type="file" disabled />
+						</Button>
+					</TableCell>
+				</TableRow>
+			);
+		}
+		
+		return html;
+	}
+	
+	// console.log(eventState);
+	// console.log(attachments);
+	
 	if (!uiState) {
 		return <></>
 	} else if (uiState == "loading") {
@@ -334,28 +368,6 @@ const Event: NextPage = () => {
 				<Header isLogin={ isLoginState } onSignOut={ onSignOut }/>
 				<SubMemu />
 			</Container>
-			
-			{/*<Box sx={{ pt: "144px", fontSize: 0, backgroundColor: "white" }}>*/}
-			{/*	<Container>*/}
-			{/*		<Box*/}
-			{/*			sx={{*/}
-			{/*				py: 5,*/}
-			{/*				display: 'flex',*/}
-			{/*				alignItems: 'flex-end',*/}
-			{/*				"& .MuiTextField-root": { mx: 2, width: 300 }*/}
-			{/*			}}*/}
-			{/*		>*/}
-			{/*			<img src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/event.png"} alt={""} width={30} height={30} />*/}
-			{/*			<TextField*/}
-			{/*				variant="standard"*/}
-			{/*				placeholder="새로운 이벤트 작성하기"*/}
-			{/*				InputProps={{*/}
-			{/*					endAdornment: <img src={"https://moacube.s3.ap-northeast-2.amazonaws.com/icon/pencil.png"} alt={""} width={30} height={30} />*/}
-			{/*				}}*/}
-			{/*			/>*/}
-			{/*		</Box>*/}
-			{/*	</Container>*/}
-			{/*</Box>*/}
 			
 			<Container
 				sx={{
@@ -615,6 +627,20 @@ const Event: NextPage = () => {
 								<FormControlLabel control={<Checkbox name={"email"} checked={email} onChange={onChange} />} label={ "이메일" } />
 								<FormControlLabel control={<Checkbox name={"address"} checked={address} onChange={onChange} />} label={ "주소" } />
 								<FormControlLabel control={<Checkbox name={"content"} checked={content} onChange={onChange} />} label={ "내용" } />
+								<TextField
+									select
+									name={ "attachments" }
+									value={ attachments || 0 }
+									size={ "small" }
+									label={ "첨부파일" }
+									sx={{ width: 100 }}
+									onChange={onChangeAttachments}
+								>
+									<MenuItem value={0}>0 개</MenuItem>
+									<MenuItem value={1}>1 개</MenuItem>
+									<MenuItem value={2}>2 개</MenuItem>
+									<MenuItem value={3}>3 개</MenuItem>
+								</TextField>
 							</FormGroup>
 						</Box>
 						<Box className={"inputBox"}>
@@ -728,6 +754,7 @@ const Event: NextPage = () => {
 											</TableRow>
 										)
 									}
+									{ viewAttachments() }
 								</TableBody>
 							</Table>
 						</Box>
